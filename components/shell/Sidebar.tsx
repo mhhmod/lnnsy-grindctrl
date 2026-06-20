@@ -39,9 +39,9 @@ export function Sidebar() {
                 "font-sans text-[13px] leading-snug",
                 "transition-colors duration-150",
                 active
-                  ? "surface-ink font-medium"
-                  : "text-muted-warm hover:bg-wash hover:text-ink",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+                  ? "surface-inverted font-medium"
+                  : "text-muted hover:bg-wash hover:text-ink",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
               )}
             >
               {t(key)}

@@ -30,9 +30,9 @@ export function MobileNav() {
         className={cx(
           "md:hidden flex flex-col items-center justify-center gap-[5px]",
           "h-8 w-8 rounded-sm border border-hairline",
-          "text-muted-warm hover:bg-wash hover:text-ink",
+          "text-muted hover:bg-wash hover:text-ink",
           "transition-colors duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
         )}
         onClick={() => setOpen(true)}
         aria-label="Open navigation"
@@ -61,9 +61,9 @@ export function MobileNav() {
                   "font-sans text-[13px] leading-snug",
                   "transition-colors duration-150",
                   active
-                    ? "surface-ink font-medium"
-                    : "text-muted-warm hover:bg-wash hover:text-ink",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+                    ? "surface-inverted font-medium"
+                    : "text-muted hover:bg-wash hover:text-ink",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
                 )}
               >
                 {t(key)}
