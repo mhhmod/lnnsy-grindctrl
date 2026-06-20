@@ -13,7 +13,9 @@
     "needsAttention": "Needs attention",
     "calm": "Nothing needs attention right now.",
     "gapChip": "GAP",
-    "outChip": "OUT"
+    "outChip": "OUT",
+    "colItem": "Item",
+    "colIssue": "Issue"
   },
   "orders": {
     "all": "All",

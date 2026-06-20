@@ -13,7 +13,9 @@
     "needsAttention": "يحتاج إلى انتباه",
     "calm": "لا يوجد ما يستدعي الانتباه حالياً.",
     "gapChip": "فجوة",
-    "outChip": "نفد"
+    "outChip": "نفد",
+    "colItem": "المنتج",
+    "colIssue": "المشكلة"
   },
   "orders": {
     "all": "الكل",

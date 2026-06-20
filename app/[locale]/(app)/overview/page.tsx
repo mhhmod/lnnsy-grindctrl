@@ -84,10 +84,10 @@ export default function OverviewPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="font-sans text-[11px] uppercase tracking-wide text-faint">
-                      Item
+                      {t("colItem")}
                     </TableHead>
                     <TableHead className="font-sans text-[11px] uppercase tracking-wide text-faint">
-                      Issue
+                      {t("colIssue")}
                     </TableHead>
                   </TableRow>
                 </TableHeader>
