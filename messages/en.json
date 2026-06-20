@@ -95,6 +95,7 @@
     "bostaDesc": "Sync real warehouse stock levels",
     "connectLabel": "Connect",
     "connectedLabel": "CONNECTED",
-    "continue": "Continue to dashboard"
+    "continue": "Continue to dashboard",
+    "connectBothHint": "Connect both accounts to continue"
   }
 }
