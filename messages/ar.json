@@ -1,0 +1,91 @@
+{
+  "nav": { "overview": "نظرة عامة", "orders": "الطلبات", "inventory": "المخزون", "variance": "الفروقات", "returns": "المرتجعات", "settings": "الإعدادات" },
+  "common": { "export": "تصدير", "search": "بحث", "signIn": "تسجيل الدخول", "connect": "ربط", "connected": "تم الربط", "continue": "المتابعة إلى لوحة التحكم" },
+  "overview": {
+    "ordersToday": "طلبات اليوم",
+    "ordersTodayFoot": "عبر جميع القنوات",
+    "lowStock": "مخزون منخفض",
+    "lowStockFoot": "منتجات أقل من 5 وحدات",
+    "outOfStock": "نفد المخزون",
+    "outOfStockFoot": "منتجات عند الصفر",
+    "unexplainedUnits": "وحدات غير مبررة",
+    "unexplainedUnitsFoot": "تحقق من الفروقات",
+    "needsAttention": "يحتاج إلى انتباه",
+    "calm": "لا يوجد ما يستدعي الانتباه حالياً.",
+    "gapChip": "فجوة",
+    "outChip": "نفد",
+    "colItem": "المنتج",
+    "colIssue": "المشكلة"
+  },
+  "orders": {
+    "all": "الكل",
+    "filterLabel": "تصفية حسب الحالة",
+    "orderNumber": "رقم الطلب",
+    "customer": "العميل",
+    "status": "الحالة",
+    "total": "الإجمالي",
+    "date": "التاريخ",
+    "emptyStatus": "لا توجد طلبات بحالة {status}.",
+    "drawerPhone": "الهاتف",
+    "drawerTracking": "رقم التتبع",
+    "drawerItems": "المنتجات",
+    "drawerTimeline": "المخطط الزمني",
+    "qty": "×"
+  },
+  "inventory": {
+    "searchPlaceholder": "بحث بالاسم أو الرمز…",
+    "product": "المنتج",
+    "inStock": "في المخزون",
+    "status": "الحالة",
+    "bestSeller": "الأكثر مبيعاً",
+    "slowMoving": "بطيء الحركة",
+    "stockAge": "عمر المخزون",
+    "soon": "قريباً",
+    "noMatch": "لا توجد منتجات تطابق بحثك.",
+    "noMatchBody": "جرّب اسماً أو رمزاً مختلفاً."
+  },
+  "variance": {
+    "legend": "الفجوة = ما لدى بوسطة فعلياً − ما تتوقعه سجلاتك. أي فجوة غير صفرية تستوجب التحقيق في المخزون.",
+    "colProduct": "المنتج",
+    "colMeasure": "القياس",
+    "colFigures": "الأرقام",
+    "expected": "المتوقع",
+    "atBosta": "لدى بوسطة",
+    "gap": "الفجوة"
+  },
+  "returns": {
+    "emptyTitle": "المرتجعات لم تُوصَل بعد",
+    "emptyBody": "بمجرد تشغيل مزامنة بوسطة، ستظهر هنا المرتجعات والتبادلات — مقسّمة حسب الشركة والعميل، بما في ذلك المرتجعات الجزئية."
+  },
+  "settings": {
+    "workspace": "مساحة العمل",
+    "name": "اسم مساحة العمل",
+    "plan": "الخطة",
+    "members": "الأعضاء",
+    "region": "المنطقة",
+    "connections": "الربط",
+    "connected": "مرتبط"
+  },
+  "login": {
+    "title": "تسجيل الدخول",
+    "subtitle": "سجّل دخولك إلى مساحة عملك للمتابعة.",
+    "email": "البريد المهني",
+    "emailPlaceholder": "you@company.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "••••••••",
+    "submit": "تسجيل الدخول",
+    "noWorkspace": "لا تملك مساحة عمل بعد؟",
+    "createOne": "أنشئ واحدة"
+  },
+  "onboarding": {
+    "title": "ربط حساباتك",
+    "subtitle": "اربط Shopify لسحب طلباتك، وبوسطة لمعرفة مستويات مخزونك الفعلية.",
+    "shopifyName": "Shopify",
+    "shopifyDesc": "مزامنة الطلبات وكتالوج المنتجات",
+    "bostaName": "بوسطة",
+    "bostaDesc": "مزامنة مستويات المخزون الفعلي في المستودع",
+    "connectLabel": "ربط",
+    "connectedLabel": "تم الربط",
+    "continue": "المتابعة إلى لوحة التحكم"
+  }
+}

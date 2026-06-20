@@ -1,0 +1,91 @@
+{
+  "nav": { "overview": "Overview", "orders": "Orders", "inventory": "Inventory", "variance": "Variance", "returns": "Returns", "settings": "Settings" },
+  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard" },
+  "overview": {
+    "ordersToday": "Orders today",
+    "ordersTodayFoot": "across all channels",
+    "lowStock": "Low stock",
+    "lowStockFoot": "items below 5 units",
+    "outOfStock": "Out of stock",
+    "outOfStockFoot": "items at zero units",
+    "unexplainedUnits": "Unexplained units",
+    "unexplainedUnitsFoot": "investigate variance",
+    "needsAttention": "Needs attention",
+    "calm": "Nothing needs attention right now.",
+    "gapChip": "GAP",
+    "outChip": "OUT",
+    "colItem": "Item",
+    "colIssue": "Issue"
+  },
+  "orders": {
+    "all": "All",
+    "filterLabel": "Filter by status",
+    "orderNumber": "Order #",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "emptyStatus": "No {status} orders.",
+    "drawerPhone": "Phone",
+    "drawerTracking": "Tracking",
+    "drawerItems": "Items",
+    "drawerTimeline": "Timeline",
+    "qty": "×"
+  },
+  "inventory": {
+    "searchPlaceholder": "Search by name or SKU…",
+    "product": "Product",
+    "inStock": "In stock",
+    "status": "Status",
+    "bestSeller": "Best seller",
+    "slowMoving": "Slow moving",
+    "stockAge": "Stock age",
+    "soon": "SOON",
+    "noMatch": "No products match your search.",
+    "noMatchBody": "Try a different name or SKU."
+  },
+  "variance": {
+    "legend": "Gap = what Bosta actually has − what your records expect. A non-zero gap is stock to investigate.",
+    "colProduct": "Product",
+    "colMeasure": "Measure",
+    "colFigures": "Figures",
+    "expected": "Expected",
+    "atBosta": "At Bosta",
+    "gap": "Gap"
+  },
+  "returns": {
+    "emptyTitle": "Returns aren't connected yet",
+    "emptyBody": "Once Bosta sync is live, returns and exchanges show here — split by courier vs. customer, including partial returns."
+  },
+  "settings": {
+    "workspace": "Workspace",
+    "name": "Workspace name",
+    "plan": "Plan",
+    "members": "Members",
+    "region": "Region",
+    "connections": "Connections",
+    "connected": "Connected"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Sign in to your workspace to continue.",
+    "email": "Work email",
+    "emailPlaceholder": "you@company.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Sign in",
+    "noWorkspace": "No workspace yet?",
+    "createOne": "Create one"
+  },
+  "onboarding": {
+    "title": "Connect your accounts",
+    "subtitle": "Connect Shopify to pull your orders, and Bosta to see your real stock levels.",
+    "shopifyName": "Shopify",
+    "shopifyDesc": "Sync orders and product catalog",
+    "bostaName": "Bosta",
+    "bostaDesc": "Sync real warehouse stock levels",
+    "connectLabel": "Connect",
+    "connectedLabel": "CONNECTED",
+    "continue": "Continue to dashboard"
+  }
+}

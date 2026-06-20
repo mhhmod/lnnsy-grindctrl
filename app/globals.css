@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Reference tokens (hex source of truth in docs/design-system.md), as HSL channels for shadcn */
+    --background: 0 0% 100%;        /* Paper #FFFFFF */
+    --foreground: 0 0% 4%;          /* Ink #0A0A0A */
+    --muted: 0 0% 96%;              /* Wash surface */
+    --muted-foreground: 0 0% 42%;   /* Muted text #6B6B6B */
+    --faint: 0 0% 61%;              /* Faint #9B9B9B */
+    --border: 0 0% 90%;             /* Hairline #E6E6E6 */
+    --input: 0 0% 90%;
+    --ring: 0 0% 4%;                /* focus ring = ink */
+    --accent: 0 0% 96%;             /* Wash #F6F6F5 */
+    --accent-foreground: 0 0% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 0 0% 4%;             /* solid ink */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 4%;
+    --destructive: 0 0% 4%;         /* no color: destructive == ink */
+    --destructive-foreground: 0 0% 100%;
+    --radius: 2px;
+  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
+}
+
+@layer utilities {
+  /* Inversion = state. Flip surface to paper-on-ink. */
+  .surface-inverted {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+  }
+  .surface-inverted *::selection { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
+  .nums { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
+}
