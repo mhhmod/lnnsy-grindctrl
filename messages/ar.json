@@ -1,0 +1,4 @@
+{
+  "nav": { "overview": "نظرة عامة", "orders": "الطلبات", "inventory": "المخزون", "variance": "الفروقات", "returns": "المرتجعات", "settings": "الإعدادات" },
+  "common": { "export": "تصدير", "search": "بحث", "signIn": "تسجيل الدخول", "connect": "ربط", "connected": "تم الربط", "continue": "المتابعة إلى لوحة التحكم" }
+}
