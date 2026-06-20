@@ -4,15 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Brandmark } from "@/components/brand/Brandmark";
+import { cx } from "@/lib/cx";
+import { Drawer } from "@/components/primitives/Drawer";
 import { TenantSwitcher } from "./TenantSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -20,9 +13,9 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 const ITEMS = ["overview", "orders", "inventory", "variance", "returns", "settings"] as const;
 
 /**
- * Hamburger button (shown md:hidden) that opens an off-canvas nav sheet.
- * RTL-aware: Arabic locales slide in from the right; LTR from the left.
- * Self-contained — holds its own open state to avoid cross-component wiring.
+ * Hamburger button (shown md:hidden) that opens an off-canvas nav drawer.
+ * Uses the new native-<dialog> Drawer primitive — no Radix, no lucide.
+ * The native <dialog> provides focus trap, Escape, and ::backdrop scrim.
  */
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -30,57 +23,64 @@ export function MobileNav() {
   const locale = useLocale();
   const pathname = usePathname();
 
-  // Arabic is RTL — slide the sheet in from the inline-start (right in RTL, left in LTR).
-  // The shadcn Sheet only supports physical "left" | "right" sides, so we pick based on locale.
-  const isRtl = locale === "ar";
-  const side = isRtl ? "right" : "left";
-
   return (
     <>
+      {/* Hamburger trigger — visible only on mobile */}
       <button
-        className="md:hidden flex items-center justify-center p-2 border hover:bg-accent"
+        className={cx(
+          "md:hidden flex flex-col items-center justify-center gap-[5px]",
+          "h-8 w-8 rounded-sm border border-hairline",
+          "text-muted-warm hover:bg-wash hover:text-ink",
+          "transition-colors duration-150",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+        )}
         onClick={() => setOpen(true)}
-        aria-label={t("overview")}
+        aria-label="Open navigation"
+        aria-expanded={open}
       >
-        <Menu className="h-5 w-5" />
+        {/* Three-line hamburger icon */}
+        <span className="block h-px w-4 bg-current" />
+        <span className="block h-px w-4 bg-current" />
+        <span className="block h-px w-4 bg-current" />
       </button>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side={side} className="flex flex-col p-0 w-[236px]">
-          <SheetHeader className="px-4 pt-5 pb-3 border-b">
-            <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <Brandmark />
-          </SheetHeader>
+      {/* Drawer — native <dialog>, no Radix */}
+      <Drawer open={open} onOpenChange={setOpen} title="Ledger">
+        {/* Nav items fill the body */}
+        <nav className="space-y-0.5 -mx-1" aria-label="Mobile navigation">
+          {ITEMS.map((key) => {
+            const href = `/${locale}/${key}`;
+            const active = pathname === href;
+            return (
+              <Link
+                key={key}
+                href={href}
+                onClick={() => setOpen(false)}
+                className={cx(
+                  "flex items-center px-3 py-2 rounded-[2px]",
+                  "font-sans text-[13px] leading-snug",
+                  "transition-colors duration-150",
+                  active
+                    ? "surface-ink font-medium"
+                    : "text-muted-warm hover:bg-wash hover:text-ink",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+                )}
+              >
+                {t(key)}
+              </Link>
+            );
+          })}
+        </nav>
 
-          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-            {ITEMS.map((key) => {
-              const href = `/${locale}/${key}`;
-              const active = pathname === href;
-              return (
-                <Link
-                  key={key}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "block border px-3 py-2 font-sans text-[13px]",
-                    active ? "surface-inverted" : "border-transparent hover:bg-accent"
-                  )}
-                >
-                  {t(key)}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="p-4 border-t space-y-3">
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <LocaleSwitcher />
-            </div>
-            <TenantSwitcher />
+        {/* Footer controls */}
+        <div className="mt-8 pt-4 border-t border-hairline space-y-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LocaleSwitcher />
           </div>
-        </SheetContent>
-      </Sheet>
+          <TenantSwitcher />
+        </div>
+      </Drawer>
     </>
   );
 }

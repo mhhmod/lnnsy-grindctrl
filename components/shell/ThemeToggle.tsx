@@ -2,11 +2,10 @@
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon } from "@/components/icons";
+import { cx } from "@/lib/cx";
 
 // useSyncExternalStore-based hydration guard: returns true only on client.
-// This avoids the react-hooks/set-state-in-effect lint rule while still
-// preventing the server/client mismatch that next-themes causes.
 function useIsMounted() {
   return useSyncExternalStore(
     () => () => {},
@@ -24,11 +23,15 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="border px-2 py-1 font-mono text-[11px] uppercase"
+        className={cx(
+          "flex h-8 w-8 items-center justify-center rounded-sm",
+          "border border-hairline text-muted-warm",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+        )}
         aria-label={t("theme")}
         disabled
       >
-        <span className="block h-[11px] w-[11px]" />
+        <span className="block h-4 w-4" />
       </button>
     );
   }
@@ -37,10 +40,16 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="border px-2 py-1 font-mono text-[11px] uppercase"
+      className={cx(
+        "flex h-8 w-8 items-center justify-center rounded-sm",
+        "border border-hairline text-muted-warm",
+        "hover:bg-wash hover:text-ink",
+        "transition-colors duration-150",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+      )}
       aria-label={t("theme")}
     >
-      {isDark ? <Sun className="h-[11px] w-[11px]" /> : <Moon className="h-[11px] w-[11px]" />}
+      {isDark ? <Sun size={15} /> : <Moon size={15} />}
     </button>
   );
 }
