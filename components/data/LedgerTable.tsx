@@ -2,5 +2,5 @@ export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 // Usage convention (documented in components.md):
 //  - <TableHead> text: uppercase, faint, 11px
 //  - numeric <TableCell>: add className="nums font-mono text-end"
-//  - clickable <TableRow>: add className="cursor-pointer hover:bg-accent"
+//  - clickable <TableRow>: add className="interactive"
 //  - problem <TableRow>: add className="surface-inverted"

@@ -40,4 +40,14 @@
   }
   .surface-inverted *::selection { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
   .nums { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
+
+  /* Interactive surfaces: hover stays legible whether or not the row is inverted,
+     in both light and dark themes (mix toward the opposite token). */
+  .interactive { cursor: pointer; transition: background-color 0.12s ease-out; }
+  .interactive:hover { background-color: hsl(var(--accent)); }
+  .surface-inverted.interactive:hover,
+  .surface-inverted .interactive:hover {
+    background-color: color-mix(in oklch, hsl(var(--foreground)) 86%, hsl(var(--background)));
+  }
+  @media (prefers-reduced-motion: reduce) { .interactive { transition: none; } }
 }
