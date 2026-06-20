@@ -4,26 +4,41 @@
 
 @layer base {
   :root {
-    /* Reference tokens (hex source of truth in docs/design-system.md), as HSL channels for shadcn */
-    --background: 0 0% 100%;        /* Paper #FFFFFF */
-    --foreground: 0 0% 4%;          /* Ink #0A0A0A */
-    --muted: 0 0% 96%;              /* Wash surface */
-    --muted-foreground: 0 0% 42%;   /* Muted text #6B6B6B */
-    --faint: 0 0% 61%;              /* Faint #9B9B9B */
-    --border: 0 0% 90%;             /* Hairline #E6E6E6 */
+    /* ── OKLCH warm token layer (Warm Editorial Ledger) ───────────────────── */
+    /* Phase 0 design system — light values */
+    --paper:        0.985 0.004 80;   /* warm off-white bg */
+    --ink:          0.205 0.012 60;   /* warm near-black text */
+    --muted-warm:   0.505 0.010 60;   /* secondary text */
+    --faint-warm:   0.660 0.008 65;   /* tertiary/captions */
+    --hairline:     0.900 0.005 75;   /* borders */
+    --wash:         0.965 0.005 78;   /* hover/subtle fill */
+    --ember:        0.505 0.150 35;   /* ember accent: gap/problem */
+    --ember-weak:   0.945 0.030 40;   /* ember tint surface */
+    --on-ember:     0.985 0.004 80;   /* text on ember */
+    --ring-warm:    0.205 0.012 60;   /* focus = ink */
+
+    /* ── Legacy HSL shadcn tokens (kept for backward compat) ─────────────── */
+    /* Old components/ui/* and screens still consume these via hsl(var(--x)). */
+    /* DO NOT remove until Phase 3. */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 42%;
+    --faint: 0 0% 61%;
+    --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 0 0% 4%;                /* focus ring = ink */
-    --accent: 0 0% 96%;             /* Wash #F6F6F5 */
+    --ring: 0 0% 4%;
+    --accent: 0 0% 96%;
     --accent-foreground: 0 0% 4%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 4%;
-    --primary: 0 0% 4%;             /* solid ink */
+    --primary: 0 0% 4%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 4%;
-    --destructive: 0 0% 4%;         /* no color: destructive == ink */
+    --destructive: 0 0% 4%;
     --destructive-foreground: 0 0% 100%;
     --radius: 2px;
   }
@@ -31,21 +46,34 @@
   body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
 
   .dark {
-    --background: 0 0% 7%;          /* near-black paper */
-    --foreground: 0 0% 96%;         /* near-white ink */
-    --muted: 0 0% 14%;              /* dark wash surface */
+    /* ── OKLCH warm tokens — dark values ─────────────────────────────────── */
+    --paper:        0.180 0.008 60;
+    --ink:          0.950 0.004 80;
+    --muted-warm:   0.700 0.010 70;
+    --faint-warm:   0.520 0.008 65;
+    --hairline:     0.300 0.008 60;
+    --wash:         0.235 0.008 60;
+    --ember:        0.640 0.150 40;   /* brighter ember on dark */
+    --ember-weak:   0.300 0.060 38;
+    --on-ember:     0.180 0.008 60;
+    --ring-warm:    0.950 0.004 80;
+
+    /* ── Legacy HSL shadcn tokens — dark ─────────────────────────────────── */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 96%;
+    --muted: 0 0% 14%;
     --muted-foreground: 0 0% 64%;
     --faint: 0 0% 45%;
-    --border: 0 0% 22%;             /* hairline on dark */
+    --border: 0 0% 22%;
     --input: 0 0% 22%;
-    --ring: 0 0% 96%;               /* focus = light */
-    --accent: 0 0% 16%;            /* hover wash (dark) */
+    --ring: 0 0% 96%;
+    --accent: 0 0% 16%;
     --accent-foreground: 0 0% 96%;
     --card: 0 0% 9%;
     --card-foreground: 0 0% 96%;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 96%;
-    --primary: 0 0% 96%;           /* solid control = light in dark mode */
+    --primary: 0 0% 96%;
     --primary-foreground: 0 0% 7%;
     --secondary: 0 0% 16%;
     --secondary-foreground: 0 0% 96%;
@@ -55,17 +83,27 @@
 }
 
 @layer utilities {
-  /* Inversion = state. Flip surface to paper-on-ink. */
+  /* Kept for backward compat — old screens reference .surface-inverted */
   .surface-inverted {
     background-color: hsl(var(--foreground));
     color: hsl(var(--background));
     border-color: hsl(var(--foreground));
   }
   .surface-inverted *::selection { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
+
+  /* ── New OKLCH surface utilities (Phase 1+) ──────────────────────────── */
+  .surface-accent {
+    background: oklch(var(--ember));
+    color: oklch(var(--on-ember));
+  }
+  .surface-ink {
+    background: oklch(var(--ink));
+    color: oklch(var(--paper));
+  }
+
   .nums { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
 
-  /* Interactive surfaces: hover stays legible whether or not the row is inverted,
-     in both light and dark themes (mix toward the opposite token). */
+  /* Interactive surfaces */
   .interactive { cursor: pointer; transition: background-color 0.12s ease-out; }
   .interactive:hover { background-color: hsl(var(--accent)); }
   .surface-inverted.interactive:hover,

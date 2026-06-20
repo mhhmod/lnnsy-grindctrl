@@ -6,6 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ── Legacy shadcn HSL tokens — kept for backward compat (Phase 3 removes) ──
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         border: "hsl(var(--border))",
@@ -19,6 +20,17 @@ const config: Config = {
         primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
         secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
         destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
+        // ── New OKLCH warm token layer (Warm Editorial Ledger) ───────────────
+        paper: "oklch(var(--paper))",
+        ink: "oklch(var(--ink))",
+        hairline: "oklch(var(--hairline))",
+        wash: "oklch(var(--wash))",
+        ember: "oklch(var(--ember))",
+        "ember-weak": "oklch(var(--ember-weak))",
+        "on-ember": "oklch(var(--on-ember))",
+        "muted-warm": "oklch(var(--muted-warm))",
+        "faint-warm": "oklch(var(--faint-warm))",
+        "ring-warm": "oklch(var(--ring-warm))",
       },
       borderRadius: { lg: "var(--radius)", md: "var(--radius)", sm: "var(--radius)" },
       fontFamily: {
