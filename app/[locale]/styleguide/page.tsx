@@ -37,6 +37,11 @@ export default function StyleguidePage() {
       <h1 className="font-display text-2xl">Styleguide</h1>
       <Block dir="ltr" />
       <Block dir="rtl" />
+      <div className="dark bg-background text-foreground p-6 space-y-8">
+        <h2 className="font-display text-lg">Dark theme</h2>
+        <Block dir="ltr" />
+        <Block dir="rtl" />
+      </div>
     </main>
   );
 }

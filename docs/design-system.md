@@ -28,6 +28,43 @@ Note: `--muted` (wash surface) and `--accent` both map to `0 0% 96%`. The distin
 
 ---
 
+## 1a. Dark theme
+
+Dark mode is **class-based** (`darkMode: ["class"]` in `tailwind.config.ts`). The `.dark` class is applied to `<html>` by `next-themes` via `ThemeProvider` (`components/theme/ThemeProvider.tsx`), configured with `attribute="class"`, `defaultTheme="system"`, and `enableSystem`. The default follows the OS preference; the user can override it with `ThemeToggle`.
+
+The dark token layer is a **pure monochrome flip** (hue 0 throughout) — the same grayscale palette, inverted. No color is introduced. Near-black (`7%` lightness) replaces Paper; near-white (`96%` lightness) replaces Ink. Pure `#000` and `#FFF` are deliberately avoided to keep contrast slightly softer.
+
+`.surface-inverted` is **unchanged** in dark mode: it still flips to `hsl(var(--foreground))` background with `hsl(var(--background))` text. In dark mode `--foreground` is the near-white value, so a problem block becomes **light-on-dark** — it still pops relative to the dark page surface.
+
+#### Token comparison: light `:root` vs `.dark`
+
+| CSS variable | Light `:root` (HSL channels) | Dark `.dark` (HSL channels) | Role |
+|---|---|---|---|
+| `--background` | `0 0% 100%` | `0 0% 7%` | Page background (near-black in dark) |
+| `--foreground` | `0 0% 4%` | `0 0% 96%` | Text + inverted-state fill (near-white in dark) |
+| `--muted` | `0 0% 96%` | `0 0% 14%` | Wash surface |
+| `--muted-foreground` | `0 0% 42%` | `0 0% 64%` | Secondary / label text |
+| `--faint` | `0 0% 61%` | `0 0% 45%` | Tertiary / caption text |
+| `--border` | `0 0% 90%` | `0 0% 22%` | Hairline borders |
+| `--input` | `0 0% 90%` | `0 0% 22%` | Input border |
+| `--ring` | `0 0% 4%` | `0 0% 96%` | Focus ring (light in dark mode) |
+| `--accent` | `0 0% 96%` | `0 0% 16%` | Hover wash |
+| `--accent-foreground` | `0 0% 4%` | `0 0% 96%` | Text on hover wash |
+| `--card` | `0 0% 100%` | `0 0% 9%` | Card background |
+| `--card-foreground` | `0 0% 4%` | `0 0% 96%` | Card text |
+| `--popover` | `0 0% 100%` | `0 0% 9%` | Popover background |
+| `--popover-foreground` | `0 0% 4%` | `0 0% 96%` | Popover text |
+| `--primary` | `0 0% 4%` | `0 0% 96%` | Solid control fill |
+| `--primary-foreground` | `0 0% 100%` | `0 0% 7%` | Text on solid control |
+| `--secondary` | `0 0% 96%` | `0 0% 16%` | Secondary surface |
+| `--secondary-foreground` | `0 0% 4%` | `0 0% 96%` | Text on secondary |
+| `--destructive` | `0 0% 4%` | `0 0% 96%` | Destructive fill (= ink/near-white) |
+| `--destructive-foreground` | `0 0% 100%` | `0 0% 7%` | Text on destructive |
+
+No `dark:` utility sprawl: all dark-mode behavior is driven by the token layer above, not per-component `dark:` class overrides.
+
+---
+
 ## 2. No color rule
 
 There is no red, green, or amber in the theme. `--destructive` maps to Ink (`0 0% 4%`), making destructive the same as primary. The theme literally has nothing to reach for except grays.
@@ -56,6 +93,38 @@ The utility that implements this is defined in `app/globals.css @layer utilities
 ```
 
 Apply `surface-inverted` to any element that must signal: problem row, active filter pill, active nav item, feature stat card, variance row with a gap, connected card on onboarding.
+
+---
+
+## 3a. Interactive hover rule
+
+The `.interactive` utility (defined in `app/globals.css @layer utilities`) replaces the previous convention of writing `cursor-pointer hover:bg-accent` directly on table rows. It exists because `hover:bg-accent` on a row that also carries `surface-inverted` produces white-on-white hover in light mode — the accent wash and the inverted background collapse.
+
+```css
+/* Interactive surfaces: hover stays legible whether or not the row is inverted,
+   in both light and dark themes (mix toward the opposite token). */
+.interactive { cursor: pointer; transition: background-color 0.12s ease-out; }
+.interactive:hover { background-color: hsl(var(--accent)); }
+.surface-inverted.interactive:hover,
+.surface-inverted .interactive:hover {
+  background-color: color-mix(in oklch, hsl(var(--foreground)) 86%, hsl(var(--background)));
+}
+@media (prefers-reduced-motion: reduce) { .interactive { transition: none; } }
+```
+
+Rules:
+
+- **Normal rows**: `.interactive:hover` applies `hsl(var(--accent))` — the standard wash in either light or dark theme.
+- **Inverted rows** (`.surface-inverted.interactive` or a `.surface-inverted` parent containing `.interactive`): hover applies a `color-mix` that lightens the inverted surface slightly (86% foreground → 14% background), keeping text legible in both light and dark themes.
+- **Reduced motion**: transition is suppressed when `prefers-reduced-motion: reduce` is active.
+
+Usage: replace `cursor-pointer hover:bg-accent` on `<TableRow>` (and any other clickable surface) with `className="interactive"`.
+
+---
+
+## 3b. Drawer close-X — single header SheetClose
+
+`OrderDrawer` (`components/orders/OrderDrawer.tsx`) renders exactly **one** close button — the `<SheetClose>` inside the `<SheetHeader>`. The close button built into shadcn's `SheetContent` (the absolute-positioned × that shadcn adds by default) was removed. Having both produced a duplicate close target with inconsistent positioning. The header close is the canonical control.
 
 ---
 

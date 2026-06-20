@@ -1,6 +1,6 @@
 {
   "nav": { "overview": "Overview", "orders": "Orders", "inventory": "Inventory", "variance": "Variance", "returns": "Returns", "settings": "Settings" },
-  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard" },
+  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard", "theme": "Theme" },
   "overview": {
     "ordersToday": "Orders today",
     "ordersTodayFoot": "across all channels",

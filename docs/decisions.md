@@ -195,3 +195,48 @@ These expand on the decision table in `docs/spec.md §4`, adding full ADR form a
 **Consequences:** If a third locale is added that is neither `en` nor `ar`, the RTL check must be updated. The condition is `locale === "ar"` — it is not generic RTL detection. A future improvement would be `locale === "ar" ? "right" : "left"` based on the `dir` attribute rather than a hardcoded locale string.
 
 Note: `OrderDrawer` uses `side="right"` unconditionally. In an RTL layout, the drawer correctly appears from the left — but this is visual-right, which is the inline-end side in RTL. This is a known gap: the order drawer should use `side="left"` under RTL to open from inline-start. Deferred to Phase 2.
+
+---
+
+## D13 — Class-based dark theme with monochrome token flip
+
+**Context:** An ops lead reviewing variance rows and failed orders late at night in a dim back-office environment needs the dashboard to be readable without glare. Problem blocks (`.surface-inverted` — the solid black rows that signal failed/returned orders or stock gaps) must remain visually distinct and legible even in a dark UI. The existing all-monochrome token layer is structurally dark-theme-ready: there are no hues to invert.
+
+**Decision:** Add a `.dark` token block in `app/globals.css` that flips the grayscale palette — near-black (`7%`) for `--background`, near-white (`96%`) for `--foreground` — and wire it via `next-themes` with `attribute="class"`, `defaultTheme="system"`, `enableSystem`. `tailwind.config.ts` sets `darkMode: ["class"]`. The user toggle is `ThemeToggle` in `TopBar` and `MobileNav`. `.surface-inverted` is left structurally unchanged: in dark mode it still resolves to `hsl(var(--foreground))` background (near-white), so a problem block becomes a light-on-dark cell that still pops against the dark page.
+
+**Rationale:**
+- Default `system` means zero configuration cost for users whose OS is already in dark mode.
+- A pure monochrome flip respects the "no color" rule (D2): no hues are introduced in dark mode.
+- Near-black/near-white (not pure `#000`/`#FFF`) avoids harsh maximum-contrast edges while keeping WCAG AA compliance.
+- Token-layer approach means no `dark:` utility sprawl: one CSS block in `globals.css` covers the entire UI.
+- `next-themes` class strategy is compatible with Next.js App Router SSR without flash, using `disableTransitionOnChange` to suppress flicker on theme switch.
+
+**Alternatives rejected:**
+- `prefers-color-scheme` media query only: no user override; operator cannot lock to light if they prefer it despite OS setting.
+- Per-component `dark:` Tailwind variants: would require touching every component and create a maintenance burden inconsistent with the token-layer principle.
+- Dark-by-default: the design spec and existing seed data screenshots are light-first; dark is an overlay, not the base.
+
+**Consequences:** A `ThemeProvider` wrapper (`components/theme/ThemeProvider.tsx`) must be present in the root layout above any component that reads `useTheme`. `ThemeToggle` (`components/shell/ThemeToggle.tsx`) uses `useSyncExternalStore` as a hydration guard to avoid the server/client mismatch that `next-themes` causes on first render. If a future color token is added, a corresponding `.dark` value must be added in the same commit.
+
+---
+
+## D14 — Inversion-aware `.interactive` hover utility
+
+**Context:** The previous convention for clickable table rows was `className="cursor-pointer hover:bg-accent"`. This works for normal rows. However, a row that is simultaneously `surface-inverted` (e.g., a failed-order row or a stock-gap row) already has `background-color: hsl(var(--foreground))` — the near-black/near-white inverted surface. Applying `hover:bg-accent` on such a row in light mode produces a light-wash hover on a black background, which collapses to illegible contrast. In dark mode the problem is the same in reverse: the accent wash (dark) is nearly identical to the inverted surface (near-white becomes near-white-ish) and the hover is invisible.
+
+**Decision:** Define a `.interactive` utility class in `app/globals.css @layer utilities` with three rules:
+
+1. Normal hover: `background-color: hsl(var(--accent))` — the standard wash (works in light and dark via the token layer).
+2. Inverted hover (`.surface-inverted.interactive:hover` and `.surface-inverted .interactive:hover`): `color-mix(in oklch, hsl(var(--foreground)) 86%, hsl(var(--background)))` — shifts the inverted surface 14% toward background, producing a perceptibly lighter (in light mode) or darker (in dark mode) hover without losing legibility.
+3. Reduced-motion: `transition: none` when `prefers-reduced-motion: reduce`.
+
+Replace all `cursor-pointer hover:bg-accent` instances on interactive rows with `className="interactive"`.
+
+**Rationale:** A single utility handles all four combinations (normal/inverted × light/dark) without any `dark:` overrides or surface-specific branches in component code. `color-mix(in oklch …)` is supported in all modern browsers and produces perceptually uniform shifts.
+
+**Alternatives rejected:**
+- Keep `hover:bg-accent` and add `dark:hover:bg-…` per component: sprawl, error-prone, hard to audit.
+- Remove hover from inverted rows: makes clickable rows indistinguishable from non-clickable ones when inverted.
+- Use opacity trick (`hover:opacity-90`): opacity on a solid inverted block changes the text opacity too, reducing legibility.
+
+**Consequences:** All LedgerTable clickable rows (and any other clickable surfaces) must use `className="interactive"` (not `cursor-pointer hover:bg-accent`). The `.interactive` class is documented in `design-system.md §3a` and in the `LedgerTable` usage example in `components.md`.

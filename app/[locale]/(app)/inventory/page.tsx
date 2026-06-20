@@ -93,7 +93,7 @@ export default function InventoryPage() {
                   return (
                     <TableRow
                       key={product.id}
-                      className={cn(problem && "surface-inverted")}
+                      className={cn("interactive", problem && "surface-inverted")}
                     >
                       <TableCell className="font-sans text-[13px]">
                         <div>{product.name}</div>

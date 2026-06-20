@@ -139,8 +139,8 @@ export function OrdersInner() {
                   <TableRow
                     key={order.id}
                     className={cn(
-                      "cursor-pointer hover:bg-accent",
-                      isProblemStatus(order.status) && "surface-inverted hover:opacity-90"
+                      "interactive",
+                      isProblemStatus(order.status) && "surface-inverted"
                     )}
                     onClick={() => openOrder(order.id)}
                   >

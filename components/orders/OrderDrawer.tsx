@@ -41,7 +41,7 @@ export function OrderDrawer({ order, onOpenChange }: OrderDrawerProps) {
                   {order.customer}
                 </span>
               </div>
-              <SheetClose className="border p-1 hover:bg-accent shrink-0 ms-4">
+              <SheetClose className="border p-1 interactive shrink-0 ms-4">
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </SheetClose>
