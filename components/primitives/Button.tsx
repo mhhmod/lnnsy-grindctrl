@@ -12,12 +12,32 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantMap: Record<ButtonVariant, string> = {
-  /** ink bg / paper text */
-  primary: "bg-ink text-paper border border-ink hover:opacity-90",
-  /** transparent + hairline border, hover wash */
-  ghost: "bg-transparent text-ink border border-hairline hover:bg-wash",
-  /** ember bg / on-ember text */
-  accent: "bg-ember text-on-ember border border-ember hover:opacity-90",
+  /**
+   * Primary — solid ink bg / paper text.
+   * Hover: opacity ~85% (soft felt-dim). Press: 1px downward settle.
+   */
+  primary:
+    "bg-ink text-paper border border-ink " +
+    "hover:opacity-[0.85] active:translate-y-px " +
+    "transition-opacity duration-[140ms] ease-out",
+
+  /**
+   * Ghost — paper fill / hairline border / ink text.
+   * Hover: border → ink; fill stays paper. Calm.
+   */
+  ghost:
+    "bg-paper text-ink border border-hairline " +
+    "hover:border-ink " +
+    "transition-colors duration-[140ms] ease-out",
+
+  /**
+   * Accent — neutralised (was ember; now maps to ink/paper = same as primary).
+   * Batch B removes .accent usages; kept here so stray refs compile.
+   */
+  accent:
+    "bg-ink text-paper border border-ink " +
+    "hover:opacity-[0.85] active:translate-y-px " +
+    "transition-opacity duration-[140ms] ease-out",
 };
 
 const sizeMap: Record<ButtonSize, string> = {
@@ -28,7 +48,7 @@ const sizeMap: Record<ButtonSize, string> = {
 /**
  * Accessible native <button> with variant + size maps.
  * No CVA, no clsx, no external deps.
- * Focus ring uses ring-warm (= ink color), visible only on keyboard nav.
+ * Focus ring uses --ring-warm (= ink color), visible only on keyboard nav.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
@@ -51,14 +71,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cx(
           // Base
           "inline-flex items-center justify-center font-sans rounded-sm",
-          "font-medium leading-none",
-          "transition-colors duration-100",
-          // Focus ring — visible on keyboard nav only
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1",
+          "font-medium leading-none cursor-pointer",
+          // Focus ring — ink outline, keyboard nav only
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1",
           // Disabled
           disabled && "opacity-40 cursor-not-allowed pointer-events-none",
-          // Reduced motion
-          "@media (prefers-reduced-motion: reduce) { transition: none }",
           variantMap[variant],
           sizeMap[size],
           className

@@ -1,25 +1,42 @@
 import { HTMLAttributes } from "react";
 import { cx } from "@/lib/cx";
 
-export type ChipVariant = "muted" | "accent" | "mono";
+export type ChipVariant = "muted" | "solid" | "mono" | "accent";
 
 interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: ChipVariant;
 }
 
 const variantMap: Record<ChipVariant, string> = {
-  /** Hairline outline, subtle secondary label */
-  muted: "border border-hairline text-muted-warm bg-transparent",
-  /** Ember outline surface — use only for meaningful signal (problem/gap status) */
-  accent: "border border-ember bg-ember-weak text-ember",
-  /** Geist Mono, for counts and numeric gap values */
+  /**
+   * Muted — hairline outline, muted text.
+   * Used for informational labels (e.g. status). Does NOT animate on hover —
+   * chips are facts, not controls. Keeping them still reinforces this.
+   */
+  muted: "border border-hairline text-[var(--muted)] bg-transparent",
+
+  /**
+   * Solid — inverted (ink fill, paper text).
+   * The primary problem/active signal — e.g. GAP −3, OUT.
+   */
+  solid: "border border-ink bg-ink text-paper",
+
+  /**
+   * Mono — hairline outline, ink text, JetBrains Mono.
+   * For counts, numeric gap values.
+   */
   mono: "border border-hairline text-ink bg-transparent font-mono",
+
+  /**
+   * Accent — neutralised alias for solid (was ember; Batch B purges usages).
+   */
+  accent: "border border-ink bg-ink text-paper",
 };
 
 /**
- * Chip / badge — spans only (no interactive state).
+ * Chip / badge — non-interactive <span>.
  * Small uppercase tracking for status labels.
- * Use variant="accent" only when the chip carries problem/gap meaning.
+ * Chips never animate on hover (they are information, not controls).
  */
 export function Chip({
   variant = "muted",

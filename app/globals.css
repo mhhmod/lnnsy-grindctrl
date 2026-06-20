@@ -4,27 +4,34 @@
 
 @layer base {
   :root {
-    /* ── OKLCH warm token layer (Warm Editorial Ledger) ───────────────────── */
-    /* Phase 0 design system — light values */
-    --paper:        0.985 0.004 80;   /* warm off-white bg */
-    --ink:          0.205 0.012 60;   /* warm near-black text */
-    --muted-warm:   0.505 0.010 60;   /* secondary text */
-    --faint-warm:   0.660 0.008 65;   /* tertiary/captions */
-    --hairline:     0.900 0.005 75;   /* borders */
-    --wash:         0.965 0.005 78;   /* hover/subtle fill */
-    --ember:        0.505 0.150 35;   /* ember accent: gap/problem */
-    --ember-weak:   0.945 0.030 40;   /* ember tint surface */
-    --on-ember:     0.985 0.004 80;   /* text on ember */
-    --ring-warm:    0.205 0.012 60;   /* focus = ink */
+    /* ── B&W Ledger token layer (light) ──────────────────────────────────── */
+    /* All values are sRGB grayscale — zero hue. */
+    --paper:    #FFFFFF;   /* background surface */
+    --ink:      #0A0A0A;   /* primary text / inverted fills */
+    --muted:    #6B6B6B;   /* secondary text */
+    --faint:    #9B9B9B;   /* tertiary / captions / disabled */
+    --hairline: #E6E6E6;   /* borders / dividers */
+    --wash:     #F6F6F5;   /* hover fills / subtle surfaces */
 
-    /* ── Legacy HSL shadcn tokens (kept for backward compat) ─────────────── */
-    /* Old components/ui/* and screens still consume these via hsl(var(--x)). */
-    /* DO NOT remove until Phase 3. */
+    /* Aliases used by primitives under the old warm names — kept so */
+    /* existing className refs compile without change (Batch B purges usage). */
+    --muted-warm:  #6B6B6B;  /* → same as --muted */
+    --faint-warm:  #9B9B9B;  /* → same as --faint */
+    --ring-warm:   #0A0A0A;  /* focus ring = ink */
+
+    /* Ember neutralised — stray refs degrade to inversion/neutral. */
+    /* Batch B removes usages; Batch C removes these vars. */
+    --ember:      #0A0A0A;   /* was accent, now ink */
+    --ember-weak: #F6F6F5;   /* was tint, now wash */
+    --on-ember:   #FFFFFF;   /* was on-accent, now paper */
+
+    /* Motion */
+    --t-fast: 140ms;
+
+    /* ── Legacy HSL shadcn tokens (backward compat — Batch C removes) ────── */
     --background: 0 0% 100%;
     --foreground: 0 0% 4%;
-    --muted: 0 0% 96%;
     --muted-foreground: 0 0% 42%;
-    --faint: 0 0% 61%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 4%;
@@ -42,28 +49,31 @@
     --destructive-foreground: 0 0% 100%;
     --radius: 2px;
   }
+
   * { @apply border-border; }
   body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
 
+  /* ── B&W Ledger dark mirror (grayscale only, no hue) ─────────────────── */
   .dark {
-    /* ── OKLCH warm tokens — dark values ─────────────────────────────────── */
-    --paper:        0.180 0.008 60;
-    --ink:          0.950 0.004 80;
-    --muted-warm:   0.700 0.010 70;
-    --faint-warm:   0.520 0.008 65;
-    --hairline:     0.300 0.008 60;
-    --wash:         0.235 0.008 60;
-    --ember:        0.640 0.150 40;   /* brighter ember on dark */
-    --ember-weak:   0.300 0.060 38;
-    --on-ember:     0.180 0.008 60;
-    --ring-warm:    0.950 0.004 80;
+    --paper:    #111111;   /* near-black surface */
+    --ink:      #F2F2F2;   /* near-white text */
+    --muted:    #9B9B9B;
+    --faint:    #6B6B6B;
+    --hairline: #2A2A2A;
+    --wash:     #1A1A1A;
+
+    --muted-warm:  #9B9B9B;
+    --faint-warm:  #6B6B6B;
+    --ring-warm:   #F2F2F2;
+
+    --ember:      #F2F2F2;
+    --ember-weak: #1A1A1A;
+    --on-ember:   #111111;
 
     /* ── Legacy HSL shadcn tokens — dark ─────────────────────────────────── */
     --background: 0 0% 7%;
     --foreground: 0 0% 96%;
-    --muted: 0 0% 14%;
     --muted-foreground: 0 0% 64%;
-    --faint: 0 0% 45%;
     --border: 0 0% 22%;
     --input: 0 0% 22%;
     --ring: 0 0% 96%;
@@ -83,38 +93,83 @@
 }
 
 @layer utilities {
-  /* Kept for backward compat — old screens reference .surface-inverted */
+  /* ── Surface utilities ──────────────────────────────────────────────────── */
+  /* Primary signal for problem/active states: ink bg, paper text, ink border. */
   .surface-inverted {
-    background-color: hsl(var(--foreground));
-    color: hsl(var(--background));
-    border-color: hsl(var(--foreground));
+    background-color: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
   }
-  .surface-inverted *::selection { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
-
-  /* ── New OKLCH surface utilities (Phase 1+) ──────────────────────────── */
-  .surface-accent {
-    background: oklch(var(--ember));
-    color: oklch(var(--on-ember));
+  .surface-inverted *::selection {
+    background-color: var(--paper);
+    color: var(--ink);
   }
+  /* Alias — keep for any Batch-A code that writes .surface-ink */
   .surface-ink {
-    background: oklch(var(--ink));
-    color: oklch(var(--paper));
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+  /* Ember neutralised: behaves like .surface-inverted (Batch B purges usages) */
+  .surface-accent {
+    background-color: var(--ink);
+    color: var(--paper);
   }
 
+  /* ── Tabular figures ──────────────────────────────────────────────────── */
   .nums { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
 
-  /* Interactive surfaces */
-  .interactive { cursor: pointer; transition: background-color 0.12s ease-out; }
-  .interactive:hover { background-color: hsl(var(--accent)); }
+  /* ── Interactive surface (hover → Wash) ───────────────────────────────── */
+  .interactive {
+    cursor: pointer;
+    transition: background-color var(--t-fast) ease-out;
+  }
+  .interactive:hover { background-color: var(--wash); }
   .surface-inverted.interactive:hover,
   .surface-inverted .interactive:hover {
-    background-color: color-mix(in oklch, hsl(var(--foreground)) 86%, hsl(var(--background)));
+    /* On inverted surfaces darken slightly instead */
+    background-color: color-mix(in srgb, var(--ink) 86%, var(--paper));
   }
-  @media (prefers-reduced-motion: reduce) { .interactive { transition: none; } }
+
+  /* ── Table row nudge (first-cell 2px inline shift on hover) ─────────────
+     Applied purely via CSS on data-clickable rows — no JS, no reflow.
+     The TD's transition is declared here; cells are always in position:
+     there is no layout shift, just a transform offset.                    */
+  tr[data-clickable] td:first-child {
+    transition: transform var(--t-fast) ease-out;
+  }
+  tr[data-clickable]:hover td:first-child {
+    transform: translateX(2px);
+  }
+  [dir="rtl"] tr[data-clickable]:hover td:first-child {
+    transform: translateX(-2px);
+  }
+
+  /* Active/opened row stays Wash */
+  tr[data-active] {
+    background-color: var(--wash);
+  }
+
+  /* ── Cross-fade helper for table body (filter change ~120ms) ─────────── */
+  .xfade {
+    transition: opacity 120ms ease-out;
+  }
+  .xfade-out {
+    opacity: 0;
+  }
+  .xfade-in {
+    opacity: 1;
+  }
+
+  /* ── Reduced-motion: disable transforms + animations, keep state ──────── */
+  @media (prefers-reduced-motion: reduce) {
+    .interactive { transition: none; }
+    tr[data-clickable] td:first-child { transition: none; }
+    tr[data-clickable]:hover td:first-child { transform: none; }
+    .xfade { transition: none; }
+  }
 }
 
 /* ── Skeleton shimmer animation ──────────────────────────────────────────── */
-/* Only animates when the user has NOT opted out of motion. */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes skeleton-shimmer {
     0%   { background-position: -200% 0; }
@@ -123,18 +178,17 @@
   .skeleton-shimmer {
     background-image: linear-gradient(
       90deg,
-      oklch(var(--wash)) 25%,
-      oklch(var(--hairline)) 50%,
-      oklch(var(--wash)) 75%
+      var(--wash) 25%,
+      var(--hairline) 50%,
+      var(--wash) 75%
     );
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.4s ease-in-out infinite;
   }
 }
-/* Under reduced-motion, .skeleton-shimmer just keeps the static wash fill from the element class. */
+/* Under reduced-motion, .skeleton-shimmer keeps the static wash fill from bg-wash. */
 
 /* ── Dialog drawer panel ─────────────────────────────────────────────────── */
-/* Pinned to inline-end, full height, slides in from the end edge. */
 dialog.drawer-panel {
   position: fixed;
   inset-block: 0;
@@ -143,8 +197,7 @@ dialog.drawer-panel {
   flex-direction: column;
   overflow: hidden;
 }
-/* A closed <dialog> must stay hidden; only flex when open (showModal sets [open]).
-   Setting display on the base selector would override the UA's display:none. */
+/* A closed <dialog> stays hidden; only flex when open (showModal sets [open]). */
 dialog.drawer-panel[open] {
   display: flex;
 }
@@ -164,13 +217,13 @@ dialog.drawer-panel:not([open]) {
   dialog.drawer-panel[open] {
     animation: drawer-slide-in 0.22s ease-out both;
   }
-  /* In RTL the panel sits on the physical left, so slide from the left. */
+  /* RTL: panel sits on the physical left, slide from the left. */
   [dir="rtl"] dialog.drawer-panel[open] {
     animation-name: drawer-slide-in-rtl;
   }
 }
 
-/* Scrim — style the native ::backdrop */
+/* Scrim — native ::backdrop, grayscale ink at 35% */
 dialog.drawer-panel::backdrop {
-  background: oklch(var(--ink) / 0.35);
+  background: color-mix(in srgb, var(--ink) 35%, transparent);
 }

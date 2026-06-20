@@ -29,17 +29,15 @@ interface MenuProps {
  *
  * A11y:
  * - Trigger: <button popovertarget="..."> with aria-haspopup="menu" and aria-expanded
- *   (updated via the popover toggle event)
  * - Popover: role="menu" with role="menuitem" buttons inside
- * - Keyboard: ArrowUp/ArrowDown moves focus between items; Enter/Space activates;
- *   Escape and click-outside close via the Popover API's built-in light-dismiss
+ * - Keyboard: ArrowUp/ArrowDown moves focus; Enter/Space activates;
+ *   Escape and outside-click close via Popover API light-dismiss
  *
- * jsdom guard: showPopover / hidePopover are not implemented in jsdom.
- * We feature-detect HTMLElement.prototype.showPopover before calling it,
- * so tests do not crash. The trigger button still renders correctly in tests.
+ * Animation: menu content fades + rises ~6px over 150ms on open.
+ * Reduced-motion: @starting-style / opacity only, no transform.
  *
- * RTL: the popover is positioned below the trigger. Alignment respects the
- * "start"/"end" prop using logical CSS values via JavaScript (inline style).
+ * SSR/client parity: always renders popover="auto" so SSR and hydration match.
+ * jsdom guard: showPopover / hidePopover feature-detected before calling.
  */
 export function Menu({ trigger, items, align = "end", className }: MenuProps) {
   const id = useId();
@@ -48,7 +46,6 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const isExpandedRef = useRef(false);
 
-  /** Call-time feature check (never during render) so SSR and client markup match. */
   function popoverApi() {
     const el = popoverRef.current as unknown as {
       showPopover?: () => void;
@@ -58,7 +55,6 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
     return null;
   }
 
-  /** Position the popover beneath the trigger button */
   function positionPopover() {
     if (!triggerRef.current || !popoverRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
@@ -76,7 +72,6 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
     }
   }
 
-  /** Update aria-expanded when popover toggles */
   useEffect(() => {
     const popover = popoverRef.current;
     if (!popover) return;
@@ -97,16 +92,12 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
 
   function handleTriggerClick() {
     const api = popoverApi();
-    if (!api) return; // unsupported env (e.g. jsdom) — no-op
-    // showPopover() / hidePopover() — light-dismiss and Escape handled by browser
+    if (!api) return;
     if (isExpandedRef.current) api.hidePopover!();
     else api.showPopover!();
   }
 
-  function handleItemKeyDown(
-    e: KeyboardEvent<HTMLButtonElement>,
-    index: number
-  ) {
+  function handleItemKeyDown(e: KeyboardEvent<HTMLButtonElement>, index: number) {
     const menuItems = popoverRef.current?.querySelectorAll<HTMLButtonElement>(
       '[role="menuitem"]'
     );
@@ -150,28 +141,28 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
           "inline-flex items-center gap-1.5 h-9 px-3",
           "font-sans text-sm text-ink",
           "border border-hairline rounded-sm bg-paper",
-          "hover:bg-wash transition-colors duration-100",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1"
+          "hover:border-ink transition-colors duration-[140ms] ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
         )}
       >
         {trigger}
-        <ChevronDown size={14} className="text-faint-warm" />
+        <ChevronDown size={14} className="text-[var(--faint)]" />
       </button>
 
-      {/* The popover div — Popover API: light-dismiss + top-layer + Escape built-in */}
+      {/* Popover — light-dismiss + top-layer + Escape via browser */}
       <div
         ref={popoverRef}
         id={popoverId}
-        // Always declare the popover attribute so SSR and client markup match.
-        // Browsers default [popover] to display:none until shown; unsupported
-        // envs (jsdom) simply ignore it. No render-time feature branch.
         popover="auto"
         role="menu"
         aria-label={typeof trigger === "string" ? trigger : "Menu"}
         className={cx(
           "min-w-[180px] p-1",
           "bg-paper border border-hairline rounded-sm",
-          "shadow-sm"
+          "shadow-sm",
+          // Fade + rise animation: uses CSS @starting-style where supported.
+          // The style block below (in the component's style tag) handles animation.
+          "menu-popover"
         )}
       >
         {items.map((item, index) => (
@@ -185,9 +176,8 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
             className={cx(
               "flex w-full items-center px-3 h-8",
               "font-sans text-sm text-start rounded-[1px]",
-              "transition-colors duration-100",
-              "hover:bg-wash",
-              "focus:outline-none focus:bg-wash",
+              "transition-colors duration-[140ms] ease-out",
+              "hover:bg-wash focus:outline-none focus:bg-wash",
               item.active && "text-ink font-medium"
             )}
           >
@@ -195,6 +185,34 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
           </button>
         ))}
       </div>
+
+      {/* Inline styles for menu open animation (fade + rise 6px, 150ms) */}
+      <style>{`
+        @media (prefers-reduced-motion: no-preference) {
+          .menu-popover:popover-open {
+            animation: menu-open 150ms ease-out both;
+          }
+          @keyframes menu-open {
+            from {
+              opacity: 0;
+              transform: translateY(6px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .menu-popover:popover-open {
+            animation: menu-open-reduced 150ms ease-out both;
+          }
+          @keyframes menu-open-reduced {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+          }
+        }
+      `}</style>
     </div>
   );
 }

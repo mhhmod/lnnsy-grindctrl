@@ -1,9 +1,7 @@
 import { HTMLAttributes } from "react";
 import { cx } from "@/lib/cx";
 
-interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
-  /** Use className to control width/height, e.g. "w-24 h-4" */
-}
+type SkeletonProps = HTMLAttributes<HTMLDivElement>;
 
 /**
  * Skeleton loading placeholder.

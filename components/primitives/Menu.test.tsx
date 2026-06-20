@@ -60,7 +60,10 @@ describe("Menu", () => {
 
   it("items have role=menuitem", () => {
     render(<Menu trigger="Open menu" items={ITEMS} />);
-    const menuItems = screen.getAllByRole("menuitem");
+    // The popover container is hidden from the accessibility tree in jsdom
+    // (popover="auto" makes the element inaccessible until opened).
+    // Query with hidden:true so we can still assert the role attribute is present.
+    const menuItems = screen.getAllByRole("menuitem", { hidden: true });
     expect(menuItems).toHaveLength(2);
   });
 });

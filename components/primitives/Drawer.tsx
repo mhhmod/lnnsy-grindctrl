@@ -20,13 +20,13 @@ interface DrawerProps {
  * - ::backdrop: scrim layered below the dialog via CSS in app/globals.css
  * - aria-modal is set to reinforce the modal role for AT
  *
- * The dialog is pinned to the inline-end edge (inset-inline-end: 0),
- * full-height via CSS, and slides in on open with a CSS transform animation.
- * prefers-reduced-motion: the slide animation is disabled; dialog appears
- * instantly.
+ * Backdrop click-to-close:
+ * - A click whose target is the dialog element itself (not its content) means
+ *   the user clicked the ::backdrop. We detect this and call .close().
  *
- * The dialog's own "close" event (fired by Escape or .close()) calls
- * onOpenChange(false) so React state stays in sync.
+ * RTL: the panel sits on the inline-end edge (~left in RTL, right in LTR).
+ * Slide animation is defined in globals.css with RTL variant.
+ * prefers-reduced-motion: slide animation is disabled; dialog appears instantly.
  */
 export function Drawer({ open, onOpenChange, title, children }: DrawerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -56,18 +56,28 @@ export function Drawer({ open, onOpenChange, title, children }: DrawerProps) {
     return () => dialog.removeEventListener("close", handleClose);
   }, [onOpenChange]);
 
+  /** Backdrop / scrim click-to-close.
+   *  When the user clicks the ::backdrop, the native click event fires on the
+   *  <dialog> element itself (not on any of its children). We detect this by
+   *  checking that e.target === the dialog node.
+   */
+  function handleDialogClick(e: React.MouseEvent<HTMLDialogElement>) {
+    if (e.target === dialogRef.current) {
+      dialogRef.current?.close();
+    }
+  }
+
   return (
     <dialog
       ref={dialogRef}
       aria-modal="true"
       aria-label={title ?? "Drawer"}
+      onClick={handleDialogClick}
       className={cx(
-        // Positioning: full height, pinned to inline-end, paper bg
         "drawer-panel",
         "m-0 h-full max-h-full w-full max-w-md",
         "bg-paper text-ink border-s border-hairline",
         "rounded-none p-0",
-        // Focus ring reset inside dialog
         "focus:outline-none"
       )}
     >
@@ -86,9 +96,9 @@ export function Drawer({ open, onOpenChange, title, children }: DrawerProps) {
           }}
           className={cx(
             "ms-auto flex h-8 w-8 items-center justify-center rounded-sm",
-            "text-muted-warm hover:text-ink hover:bg-wash",
-            "transition-colors duration-100",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-0"
+            "text-[var(--muted)] hover:text-ink hover:bg-wash",
+            "transition-colors duration-[140ms] ease-out",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-0"
           )}
         >
           <Close size={16} />
