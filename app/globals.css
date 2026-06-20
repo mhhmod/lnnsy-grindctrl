@@ -29,6 +29,29 @@
   }
   * { @apply border-border; }
   body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
+
+  .dark {
+    --background: 0 0% 7%;          /* near-black paper */
+    --foreground: 0 0% 96%;         /* near-white ink */
+    --muted: 0 0% 14%;              /* dark wash surface */
+    --muted-foreground: 0 0% 64%;
+    --faint: 0 0% 45%;
+    --border: 0 0% 22%;             /* hairline on dark */
+    --input: 0 0% 22%;
+    --ring: 0 0% 96%;               /* focus = light */
+    --accent: 0 0% 16%;            /* hover wash (dark) */
+    --accent-foreground: 0 0% 96%;
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 96%;           /* solid control = light in dark mode */
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 96%;
+    --destructive: 0 0% 96%;
+    --destructive-foreground: 0 0% 7%;
+  }
 }
 
 @layer utilities {

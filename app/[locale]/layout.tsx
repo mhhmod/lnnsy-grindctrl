@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { fontVars } from "@/lib/fonts";
 import { TenantProvider } from "@/lib/tenant-context";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -20,11 +21,13 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
-    <html lang={locale} dir={dir} className={fontVars}>
+    <html lang={locale} dir={dir} className={fontVars} suppressHydrationWarning>
       <body className={locale === "ar" ? "font-arabic" : "font-sans"}>
-        <NextIntlClientProvider messages={messages}>
-          <TenantProvider>{children}</TenantProvider>
-        </NextIntlClientProvider>
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>
+            <TenantProvider>{children}</TenantProvider>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

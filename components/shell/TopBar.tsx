@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import { MobileNav } from "./MobileNav";
 
 export function TopBar({ title }: { title: string }) {
@@ -13,6 +14,7 @@ export function TopBar({ title }: { title: string }) {
         <h1 className="font-display text-[18px] font-semibold truncate">{title}</h1>
       </div>
       <div className="flex items-center gap-2 shrink-0">
+        <ThemeToggle />
         <LocaleSwitcher />
         <Button variant="outline" size="sm">{t("export")}</Button>
       </div>

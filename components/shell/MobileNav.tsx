@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/sheet";
 import { Brandmark } from "@/components/brand/Brandmark";
 import { TenantSwitcher } from "./TenantSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 const ITEMS = ["overview", "orders", "inventory", "variance", "returns", "settings"] as const;
 
@@ -70,7 +72,11 @@ export function MobileNav() {
             })}
           </nav>
 
-          <div className="p-4 border-t">
+          <div className="p-4 border-t space-y-3">
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <LocaleSwitcher />
+            </div>
             <TenantSwitcher />
           </div>
         </SheetContent>
