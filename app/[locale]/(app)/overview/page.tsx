@@ -53,7 +53,7 @@ export default function OverviewPage() {
           <h2 className="font-display text-[26px] font-semibold leading-tight text-ink">
             {tNav("overview")}
           </h2>
-          <p className="font-sans text-[14px] text-muted-warm leading-snug">
+          <p className="font-sans text-[14px] text-muted leading-snug">
             {t("lead")}
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function OverviewPage() {
 
         {/* ── Needs attention ──────────────────────────────────────────────── */}
         <section>
-          <h2 className="font-display text-[13px] uppercase tracking-widest text-faint-warm mb-4">
+          <h2 className="font-display text-[13px] uppercase tracking-widest text-faint mb-4">
             {t("needsAttention")}
           </h2>
 
@@ -108,7 +108,7 @@ export default function OverviewPage() {
               </THead>
               <TBody>
                 {varianceRows.map((row) => (
-                  <TR key={row.sku} className="interactive">
+                  <TR key={row.sku} className="interactive" data-clickable="true">
                     <TD>
                       <Link
                         href={`/${locale}/variance`}
@@ -118,7 +118,7 @@ export default function OverviewPage() {
                         <span className="font-sans text-[13px] text-ink">
                           {row.name}
                         </span>
-                        <span className="font-mono text-[11px] text-faint-warm nums">
+                        <span className="font-mono text-[11px] text-faint nums">
                           {row.sku}
                         </span>
                       </Link>
@@ -126,9 +126,9 @@ export default function OverviewPage() {
                     <TD>
                       <Link
                         href={`/${locale}/variance`}
-                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1 rounded-[2px]"
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1 rounded-[2px]"
                       >
-                        <Chip variant="accent" className="font-mono nums">
+                        <Chip variant="solid" className="font-mono nums">
                           {t("gapChip")} {formatGap(row.gap)}
                         </Chip>
                       </Link>
@@ -136,7 +136,7 @@ export default function OverviewPage() {
                   </TR>
                 ))}
                 {outOfStockProducts.map((product) => (
-                  <TR key={product.id} className="interactive">
+                  <TR key={product.id} className="interactive" data-clickable="true">
                     <TD>
                       <Link
                         href={`/${locale}/inventory`}
@@ -146,7 +146,7 @@ export default function OverviewPage() {
                         <span className="font-sans text-[13px] text-ink">
                           {product.name}
                         </span>
-                        <span className="font-mono text-[11px] text-faint-warm nums">
+                        <span className="font-mono text-[11px] text-faint nums">
                           {product.sku}
                         </span>
                       </Link>
@@ -154,9 +154,9 @@ export default function OverviewPage() {
                     <TD>
                       <Link
                         href={`/${locale}/inventory`}
-                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring-warm focus-visible:ring-offset-1 rounded-[2px]"
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1 rounded-[2px]"
                       >
-                        <Chip variant="accent" className="font-mono nums">
+                        <Chip variant="solid" className="font-mono nums">
                           {t("outChip")}
                         </Chip>
                       </Link>
@@ -166,7 +166,7 @@ export default function OverviewPage() {
               </TBody>
             </Table>
           ) : (
-            <p className="font-sans text-[13px] text-muted-warm py-6">
+            <p className="font-sans text-[13px] text-muted py-6">
               {t("calm")}
             </p>
           )}
@@ -193,23 +193,29 @@ function StatItem({
       className={cx(
         "p-4 sm:p-5 flex flex-col gap-2",
         feature
-          ? "bg-ember-weak" // ember-weak tint — visual hero, legible at any contrast
+          ? "surface-inverted" // inverted — paper-on-ink, the visual hero
           : "bg-paper"
       )}
     >
-      <div className="font-sans text-[11px] uppercase tracking-widest text-faint-warm leading-none">
+      <div className={cx(
+        "font-sans text-[11px] uppercase tracking-widest leading-none",
+        feature ? "text-paper opacity-60" : "text-faint"
+      )}>
         {label}
       </div>
       <div
         className={cx(
           "font-mono nums text-[34px] leading-none font-normal",
-          feature ? "text-ember" : "text-ink"
+          feature ? "text-paper" : "text-ink"
         )}
       >
         {value}
       </div>
       {foot && (
-        <div className="font-sans text-[11px] text-faint-warm leading-snug">
+        <div className={cx(
+          "font-sans text-[11px] leading-snug",
+          feature ? "text-paper opacity-60" : "text-faint"
+        )}>
           {foot}
         </div>
       )}
