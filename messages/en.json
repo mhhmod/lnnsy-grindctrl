@@ -1,4 +1,45 @@
 {
   "nav": { "overview": "Overview", "orders": "Orders", "inventory": "Inventory", "variance": "Variance", "returns": "Returns", "settings": "Settings" },
-  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard" }
+  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard" },
+  "overview": {
+    "ordersToday": "Orders today",
+    "ordersTodayFoot": "across all channels",
+    "lowStock": "Low stock",
+    "lowStockFoot": "items below 5 units",
+    "outOfStock": "Out of stock",
+    "outOfStockFoot": "items at zero units",
+    "unexplainedUnits": "Unexplained units",
+    "unexplainedUnitsFoot": "investigate variance",
+    "needsAttention": "Needs attention",
+    "calm": "Nothing needs attention right now.",
+    "gapChip": "GAP",
+    "outChip": "OUT"
+  },
+  "orders": {
+    "all": "All",
+    "filterLabel": "Filter by status",
+    "orderNumber": "Order #",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "emptyStatus": "No {status} orders.",
+    "drawerPhone": "Phone",
+    "drawerTracking": "Tracking",
+    "drawerItems": "Items",
+    "drawerTimeline": "Timeline",
+    "qty": "×"
+  },
+  "inventory": {
+    "searchPlaceholder": "Search by name or SKU…",
+    "product": "Product",
+    "inStock": "In stock",
+    "status": "Status",
+    "bestSeller": "Best seller",
+    "slowMoving": "Slow moving",
+    "stockAge": "Stock age",
+    "soon": "SOON",
+    "noMatch": "No products match your search.",
+    "noMatchBody": "Try a different name or SKU."
+  }
 }
