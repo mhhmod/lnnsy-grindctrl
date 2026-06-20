@@ -13,45 +13,19 @@
     --hairline: #E6E6E6;   /* borders / dividers */
     --wash:     #F6F6F5;   /* hover fills / subtle surfaces */
 
-    /* Aliases used by primitives under the old warm names — kept so */
-    /* existing className refs compile without change (Batch B purges usage). */
+    /* Aliases used by primitives */
     --muted-warm:  #6B6B6B;  /* → same as --muted */
     --faint-warm:  #9B9B9B;  /* → same as --faint */
     --ring-warm:   #0A0A0A;  /* focus ring = ink */
 
-    /* Ember neutralised — stray refs degrade to inversion/neutral. */
-    /* Batch B removes usages; Batch C removes these vars. */
-    --ember:      #0A0A0A;   /* was accent, now ink */
-    --ember-weak: #F6F6F5;   /* was tint, now wash */
-    --on-ember:   #FFFFFF;   /* was on-accent, now paper */
-
     /* Motion */
     --t-fast: 140ms;
 
-    /* ── Legacy HSL shadcn tokens (backward compat — Batch C removes) ────── */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 4%;
-    --muted-foreground: 0 0% 42%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 4%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
-    --primary: 0 0% 4%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 4%;
-    --destructive: 0 0% 4%;
-    --destructive-foreground: 0 0% 100%;
     --radius: 2px;
   }
 
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
+  * { @apply border-hairline; }
+  body { @apply bg-paper text-ink; font-feature-settings: "tnum" 1; }
 
   /* ── B&W Ledger dark mirror (grayscale only, no hue) ─────────────────── */
   .dark {
@@ -65,30 +39,6 @@
     --muted-warm:  #9B9B9B;
     --faint-warm:  #6B6B6B;
     --ring-warm:   #F2F2F2;
-
-    --ember:      #F2F2F2;
-    --ember-weak: #1A1A1A;
-    --on-ember:   #111111;
-
-    /* ── Legacy HSL shadcn tokens — dark ─────────────────────────────────── */
-    --background: 0 0% 7%;
-    --foreground: 0 0% 96%;
-    --muted-foreground: 0 0% 64%;
-    --border: 0 0% 22%;
-    --input: 0 0% 22%;
-    --ring: 0 0% 96%;
-    --accent: 0 0% 16%;
-    --accent-foreground: 0 0% 96%;
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 0 0% 96%;
-    --primary-foreground: 0 0% 7%;
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 0 0% 96%;
-    --destructive: 0 0% 96%;
-    --destructive-foreground: 0 0% 7%;
   }
 }
 
@@ -104,13 +54,8 @@
     background-color: var(--paper);
     color: var(--ink);
   }
-  /* Alias — keep for any Batch-A code that writes .surface-ink */
+  /* Alias — keep for any code that writes .surface-ink */
   .surface-ink {
-    background-color: var(--ink);
-    color: var(--paper);
-  }
-  /* Ember neutralised: behaves like .surface-inverted (Batch B purges usages) */
-  .surface-accent {
     background-color: var(--ink);
     color: var(--paper);
   }

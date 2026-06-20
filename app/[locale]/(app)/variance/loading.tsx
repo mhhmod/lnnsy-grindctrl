@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/primitives/Skeleton";
 
 /**
  * Next.js loading UI for the variance route.
