@@ -1,26 +1,30 @@
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Chip } from "@/components/primitives/Chip";
 import type { OrderStatus } from "@/lib/types";
 import { isProblemStatus } from "@/lib/orders";
 import { stockStatus } from "@/lib/stock";
 
+/**
+ * OrderStatusChip — problem statuses (Cancelled/Failed/Returned) invert;
+ * all others use the muted variant. No hover animation (chips are facts).
+ */
 export function OrderStatusChip({ status }: { status: OrderStatus }) {
   const problem = isProblemStatus(status);
   return (
-    <Badge variant="outline" className={cn("rounded-[2px] font-sans text-[11px] uppercase tracking-wide",
-      problem && "surface-inverted")}>
+    <Chip variant={problem ? "solid" : "muted"}>
       {status}
-    </Badge>
+    </Chip>
   );
 }
 
+/**
+ * StockStatusChip — Out and Low invert; OK is muted.
+ */
 export function StockStatusChip({ inStock }: { inStock: number }) {
   const s = stockStatus(inStock);
   const problem = s !== "OK";
   return (
-    <Badge variant="outline" className={cn("rounded-[2px] font-sans text-[11px] uppercase tracking-wide",
-      problem && "surface-inverted")}>
+    <Chip variant={problem ? "solid" : "muted"}>
       {s}
-    </Badge>
+    </Chip>
   );
 }

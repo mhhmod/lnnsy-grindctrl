@@ -5,21 +5,25 @@ import { OrderStatusChip, StockStatusChip } from "@/components/data/StatusChip";
 describe("OrderStatusChip", () => {
   it("inverts on problem statuses", () => {
     render(<OrderStatusChip status="Failed" />);
-    expect(screen.getByText("Failed")).toHaveClass("surface-inverted");
+    // Chip variant="solid" renders bg-ink (the inverted state)
+    expect(screen.getByText("Failed")).toHaveClass("bg-ink");
   });
   it("does not invert on normal statuses", () => {
     render(<OrderStatusChip status="Delivered" />);
-    expect(screen.getByText("Delivered")).not.toHaveClass("surface-inverted");
+    // Chip variant="muted" — no bg-ink
+    expect(screen.getByText("Delivered")).not.toHaveClass("bg-ink");
   });
 });
 
 describe("StockStatusChip", () => {
   it("inverts on Out and Low", () => {
     render(<StockStatusChip inStock={0} />);
-    expect(screen.getByText("Out")).toHaveClass("surface-inverted");
+    // Chip variant="solid" renders bg-ink (the inverted state)
+    expect(screen.getByText("Out")).toHaveClass("bg-ink");
   });
   it("does not invert on OK", () => {
     render(<StockStatusChip inStock={20} />);
-    expect(screen.getByText("OK")).not.toHaveClass("surface-inverted");
+    // Chip variant="muted" — no bg-ink
+    expect(screen.getByText("OK")).not.toHaveClass("bg-ink");
   });
 });
