@@ -40,7 +40,7 @@
     "qty": "×"
   },
   "inventory": {
-    "searchPlaceholder": "Search by name or SKU…",
+    "searchPlaceholder": "Search products",
     "product": "Product",
     "inStock": "In stock",
     "status": "Status",
@@ -48,17 +48,19 @@
     "slowMoving": "Slow moving",
     "stockAge": "Stock age",
     "soon": "SOON",
-    "noMatch": "No products match your search.",
-    "noMatchBody": "Try a different name or SKU."
+    "noMatch": "No products match \"{query}\".",
+    "clearSearch": "Clear search"
   },
   "variance": {
-    "legend": "Gap = what Bosta actually has − what your records expect. A non-zero gap is stock to investigate.",
+    "legend": "Gap = what Bosta actually has minus what your records expect. A non-zero gap is stock to investigate.",
     "colProduct": "Product",
     "colMeasure": "Measure",
     "colFigures": "Figures",
     "expected": "Expected",
     "atBosta": "At Bosta",
-    "gap": "Gap"
+    "gap": "Gap",
+    "storyShort": "{n} units short — records expect {expected}, only {atBosta} reached Bosta.",
+    "storyExtra": "{n} extra at Bosta — records expect {expected}, {atBosta} on hand."
   },
   "returns": {
     "emptyTitle": "Returns aren't connected yet",
