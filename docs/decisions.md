@@ -240,3 +240,77 @@ Replace all `cursor-pointer hover:bg-accent` instances on interactive rows with 
 - Use opacity trick (`hover:opacity-90`): opacity on a solid inverted block changes the text opacity too, reducing legibility.
 
 **Consequences:** All LedgerTable clickable rows (and any other clickable surfaces) must use `className="interactive"` (not `cursor-pointer hover:bg-accent`). The `.interactive` class is documented in `design-system.md §3a` and in the `LedgerTable` usage example in `components.md`.
+
+---
+
+## D19 — Revert to strict B&W ledger (supersedes warm-editorial / ember open-redesign)
+
+**Context:** A redesign branch (`redesign/warm-editorial-ledger`) opened with OKLCH warm token exploration, Cabinet Grotesk as a display font, and ember-toned accent classes (`bg-ember-weak`, `text-ember`). After reviewing `ui-ux-reference.md` (the new authoritative product design reference), the direction changed: the reference foregrounds strict monochrome + comfort, not warm tones.
+
+**Decision:** Remove all warm/ember tokens, OKLCH variables, and Cabinet Grotesk. Revert to the pure B&W palette (`--paper`, `--ink`, `--muted`, `--faint`, `--hairline`, `--wash`) with `--t-fast: 140ms` ease-out motion. `ui-ux-reference.md` and `DESIGN.md` are the design source of truth.
+
+**Rationale:** The user provided an updated design reference that explicitly mandates monochrome + comfort. Maintaining warm/ember tokens alongside a B&W spec would create an inconsistency that is expensive to audit and would mislead future engineers. A clean break is preferable.
+
+**Alternatives rejected:**
+- Keeping ember as a secondary accent: contradicts the "no colour" rule in `ui-ux-reference.md`.
+- Gradual token migration: prolongs inconsistency; defers the clean state.
+
+**Consequences:** All references to `bg-ember-*`, `text-ember`, `--ember-*`, `--t-comfort`, Cabinet Grotesk, and the OKLCH `@layer base` block are removed. `app/globals.css` now contains only sRGB grayscale tokens. `next-themes` continues to provide the grayscale dark mirror. This ADR supersedes the rationale of D2 (which referenced shadcn) and the font notes of D2 (which referenced a warm palette).
+
+---
+
+## D20 — Comfort interaction layer
+
+**Context:** The B&W ledger needed a set of consistent micro-interactions to make the UI feel readable and alive without adding colour or complexity.
+
+**Decision:** Implement the following comfort interactions, all defined in `app/globals.css` and the hand-rolled primitives:
+
+1. **Row Wash hover + first-cell inline nudge:** `tr[data-clickable]` rows get a `--wash` background on hover (via `.interactive`) and `translateX(2px)` on the first `<td>` (or `-2px` in RTL). Transition: `--t-fast` (140ms) `ease-out`. No JS, no reflow — pure CSS transform.
+2. **Honest-count filters with cross-fade:** `FilterPills` shows real counts from the full unfiltered list. Count-0 pills are faint + disabled. On filter or search change, the table body cross-fades at 120ms (`<TBody key={fadeKey}>` remount + `.xfade.xfade-in`).
+3. **Live multi-field search with match-bold + session persistence:** Orders screen searches order number and customer simultaneously; matched substrings are `<strong>`-wrapped. The active filter is persisted to `sessionStorage("orders.filter")` and restored on mount.
+4. **Smart default sorts:** Orders sorted newest-first by ISO date; variance sorted by gap magnitude (non-zero first).
+5. **Variance plain-language tooltip:** The gap figure cell wraps in `TooltipWrap` with a plain-language explanation. `role="tooltip"` + `aria-describedby` wiring; 150ms fade-in.
+6. **Motion token `--t-fast: 140ms ease-out`:** Consistent across all transitions. Reduced-motion: all transitions and transforms suppressed.
+
+**Rationale:** These interactions address the user experience of an ops lead reviewing data under time pressure — hover clarity, keyboard navigability, result feedback, and persistence reduce cognitive load without adding visual noise.
+
+**Alternatives rejected:**
+- Framer Motion / GSAP: overkill; runtime dependency for 120–180ms transitions that CSS handles natively.
+- CSS animation libraries: all transitions are simple enough for native `transition` properties.
+
+**Consequences:** All interactive table rows must use `data-clickable="true"` and optionally `data-active="true"`. The `FilterPills` component must always receive honest counts (computed from the full unfiltered list). The `sessionStorage` key `"orders.filter"` must be documented if new filter screens are added.
+
+---
+
+## D21 — Full de-shadcn: hand-rolled primitives on native dialog + Popover API + cx
+
+**Context:** The build previously used shadcn/ui (Radix UI under the hood), CVA for variant maps, clsx + tailwind-merge for class merging, and lucide-react for icons. These dependencies were removed as part of the redesign to the B&W comfort ledger.
+
+**Decision:** Remove `shadcn`, `@radix-ui/*`, `lucide-react`, `class-variance-authority` (`cva`), `clsx`, and `tailwind-merge` entirely. Replace with:
+
+- **`cx`** from `lib/cx.ts` — a minimal class-name joiner (no merging, no deduplication — simple template-literal join). Used everywhere in place of `cn()`/`clsx()`/`cx()`.
+- **`Button`** — native `<button>` with a `variantMap` and `sizeMap` object lookup.
+- **`Chip`** — native `<span>` with `variantMap`.
+- **`Input`** — native `<input>` with `forwardRef`; `variant="search"` adds icon prefix + × clear.
+- **`Table` / `THead` / `TBody` / `TR` / `TH` / `TD`** — styled native table elements; `TH` has optional `sortable`/`sortDir`/`onSort` props.
+- **`FilterPills`** — `role="group"` + `aria-pressed` buttons with roving arrow-key focus.
+- **`Tooltip` / `TooltipWrap`** — CSS `position: absolute` + `role="tooltip"` + `aria-describedby`.
+- **`Drawer`** — native `<dialog>` with `showModal()` / `.close()`. Focus trap, Escape, and backdrop via the browser.
+- **`Menu`** — native `popover="auto"` with `role="menu"` / `role="menuitem"`. Light-dismiss and Escape via the browser Popover API.
+- **`Skeleton`** — `<div>` with `role="status"` and `skeleton-shimmer` CSS class.
+- **Icons** (`components/icons/index.tsx`) — inline SVG components; no external icon library.
+
+**Rationale:**
+- The design system has no hue, no rounding variety, and no complex animation — the primitive complexity of CVA and Radix was unused weight.
+- Native `<dialog>` and Popover API provide focus trap, Escape handling, and backdrop natively, eliminating the largest accessibility complexity that Radix solved.
+- Removing `tailwind-merge` means class conflicts are avoided structurally (variants are set in a map, not accumulated from multiple sources).
+- Fewer runtime dependencies = smaller bundle, simpler audit surface.
+
+**Deliberate override — Inter + monochrome:** The `stitch` skill's style rules ban Inter as a body font and require an accent colour. This build deliberately overrides both rules because `ui-ux-reference.md` explicitly mandates Inter for body text alongside Space Grotesk for display, and the monochrome-only palette is the defining product constraint. The overrides are intentional, not accidental.
+
+**Alternatives rejected:**
+- Keeping shadcn with lighter usage: would require maintaining `components/ui/` alongside `components/primitives/`, creating two competing primitive layers.
+- Using Headless UI instead of Radix: same tradeoff — abstracts native browser features that work well directly.
+- Keeping lucide-react: 4.5MB+ tree-shaken icon package for 7 icons used; inline SVGs are ~200 lines total.
+
+**Consequences:** `components/ui/` no longer exists. All primitive imports must come from `components/primitives/`. The `cn()` import (`lib/utils.ts`) is replaced by `cx()` (`lib/cx.ts`). Any future primitive addition must be hand-rolled or approved for dependency introduction. The Popover API (`popover="auto"`) is not supported in Safari < 17 — confirm browser support matrix before production deployment.
