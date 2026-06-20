@@ -48,9 +48,15 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const isExpandedRef = useRef(false);
 
-  const supportsPopover =
-    typeof HTMLElement !== "undefined" &&
-    typeof (HTMLElement.prototype as unknown as { showPopover?: unknown }).showPopover === "function";
+  /** Call-time feature check (never during render) so SSR and client markup match. */
+  function popoverApi() {
+    const el = popoverRef.current as unknown as {
+      showPopover?: () => void;
+      hidePopover?: () => void;
+    } | null;
+    if (el && typeof el.showPopover === "function") return el;
+    return null;
+  }
 
   /** Position the popover beneath the trigger button */
   function positionPopover() {
@@ -90,15 +96,11 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
   });
 
   function handleTriggerClick() {
-    if (!supportsPopover) return;
-    const popover = popoverRef.current;
-    if (!popover) return;
+    const api = popoverApi();
+    if (!api) return; // unsupported env (e.g. jsdom) — no-op
     // showPopover() / hidePopover() — light-dismiss and Escape handled by browser
-    if (isExpandedRef.current) {
-      (popover as unknown as { hidePopover: () => void }).hidePopover();
-    } else {
-      (popover as unknown as { showPopover: () => void }).showPopover();
-    }
+    if (isExpandedRef.current) api.hidePopover!();
+    else api.showPopover!();
   }
 
   function handleItemKeyDown(
@@ -132,9 +134,7 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
 
   function handleItemSelect(item: MenuItem) {
     item.onSelect();
-    if (supportsPopover && popoverRef.current) {
-      (popoverRef.current as unknown as { hidePopover: () => void }).hidePopover();
-    }
+    popoverApi()?.hidePopover!();
   }
 
   return (
@@ -162,16 +162,16 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
       <div
         ref={popoverRef}
         id={popoverId}
-        // The popover attribute — tells the browser this is a popover
-        {...(supportsPopover ? { popover: "auto" } : {})}
+        // Always declare the popover attribute so SSR and client markup match.
+        // Browsers default [popover] to display:none until shown; unsupported
+        // envs (jsdom) simply ignore it. No render-time feature branch.
+        popover="auto"
         role="menu"
         aria-label={typeof trigger === "string" ? trigger : "Menu"}
         className={cx(
           "min-w-[180px] p-1",
           "bg-paper border border-hairline rounded-sm",
-          "shadow-sm",
-          // When Popover API is not supported (jsdom), hide it
-          !supportsPopover && "hidden"
+          "shadow-sm"
         )}
       >
         {items.map((item, index) => (

@@ -140,9 +140,16 @@ dialog.drawer-panel {
   inset-block: 0;
   inset-inline-end: 0;
   inset-inline-start: auto;
-  display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+/* A closed <dialog> must stay hidden; only flex when open (showModal sets [open]).
+   Setting display on the base selector would override the UA's display:none. */
+dialog.drawer-panel[open] {
+  display: flex;
+}
+dialog.drawer-panel:not([open]) {
+  display: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -150,12 +157,16 @@ dialog.drawer-panel {
     from { transform: translateX(100%); }
     to   { transform: translateX(0); }
   }
-  /* In RTL the drawer still slides from inline-end (physical right in LTR, left in RTL) */
-  [dir="rtl"] dialog.drawer-panel {
-    /* Override for RTL: slide from the left */
+  @keyframes drawer-slide-in-rtl {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
   }
   dialog.drawer-panel[open] {
     animation: drawer-slide-in 0.22s ease-out both;
+  }
+  /* In RTL the panel sits on the physical left, so slide from the left. */
+  [dir="rtl"] dialog.drawer-panel[open] {
+    animation-name: drawer-slide-in-rtl;
   }
 }
 
