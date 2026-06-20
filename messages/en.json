@@ -10,6 +10,7 @@
     "outOfStockFoot": "items at zero units",
     "unexplainedUnits": "Unexplained units",
     "unexplainedUnitsFoot": "investigate variance",
+    "lead": "Your stock picture, right now.",
     "needsAttention": "Needs attention",
     "calm": "Nothing needs attention right now.",
     "gapChip": "GAP",
