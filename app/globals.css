@@ -112,3 +112,54 @@
   }
   @media (prefers-reduced-motion: reduce) { .interactive { transition: none; } }
 }
+
+/* ── Skeleton shimmer animation ──────────────────────────────────────────── */
+/* Only animates when the user has NOT opted out of motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes skeleton-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+  .skeleton-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      oklch(var(--wash)) 25%,
+      oklch(var(--hairline)) 50%,
+      oklch(var(--wash)) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  }
+}
+/* Under reduced-motion, .skeleton-shimmer just keeps the static wash fill from the element class. */
+
+/* ── Dialog drawer panel ─────────────────────────────────────────────────── */
+/* Pinned to inline-end, full height, slides in from the end edge. */
+dialog.drawer-panel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes drawer-slide-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+  /* In RTL the drawer still slides from inline-end (physical right in LTR, left in RTL) */
+  [dir="rtl"] dialog.drawer-panel {
+    /* Override for RTL: slide from the left */
+  }
+  dialog.drawer-panel[open] {
+    animation: drawer-slide-in 0.22s ease-out both;
+  }
+}
+
+/* Scrim — style the native ::backdrop */
+dialog.drawer-panel::backdrop {
+  background: oklch(var(--ink) / 0.35);
+}
