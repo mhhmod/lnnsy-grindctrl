@@ -10,6 +10,7 @@
     "outOfStockFoot": "منتجات عند الصفر",
     "unexplainedUnits": "وحدات غير مبررة",
     "unexplainedUnitsFoot": "تحقق من الفروقات",
+    "lead": "صورة مخزونك، الآن.",
     "needsAttention": "يحتاج إلى انتباه",
     "calm": "لا يوجد ما يستدعي الانتباه حالياً.",
     "gapChip": "فجوة",
@@ -26,6 +27,12 @@
     "total": "الإجمالي",
     "date": "التاريخ",
     "emptyStatus": "لا توجد طلبات بحالة {status}.",
+    "searchPlaceholder": "البحث في الطلبات أو العملاء",
+    "resultCount": "{shown} من {total} طلب",
+    "emptySearch": "لا توجد طلبات بحالة {status} تطابق \"{query}\".",
+    "emptyFilter": "لا توجد طلبات بحالة {status}.",
+    "clearSearch": "مسح البحث",
+    "showAll": "عرض جميع الطلبات",
     "drawerPhone": "الهاتف",
     "drawerTracking": "رقم التتبع",
     "drawerItems": "المنتجات",
@@ -33,7 +40,7 @@
     "qty": "×"
   },
   "inventory": {
-    "searchPlaceholder": "بحث بالاسم أو الرمز…",
+    "searchPlaceholder": "بحث في المنتجات",
     "product": "المنتج",
     "inStock": "في المخزون",
     "status": "الحالة",
@@ -41,17 +48,19 @@
     "slowMoving": "بطيء الحركة",
     "stockAge": "عمر المخزون",
     "soon": "قريباً",
-    "noMatch": "لا توجد منتجات تطابق بحثك.",
-    "noMatchBody": "جرّب اسماً أو رمزاً مختلفاً."
+    "noMatch": "لا توجد منتجات تطابق \"{query}\".",
+    "clearSearch": "مسح البحث"
   },
   "variance": {
-    "legend": "الفجوة = ما لدى بوسطة فعلياً − ما تتوقعه سجلاتك. أي فجوة غير صفرية تستوجب التحقيق في المخزون.",
+    "legend": "الفجوة = ما لدى بوسطة فعلياً ناقص ما تتوقعه سجلاتك. أي فجوة غير صفرية تستوجب التحقيق في المخزون.",
     "colProduct": "المنتج",
     "colMeasure": "القياس",
     "colFigures": "الأرقام",
     "expected": "المتوقع",
     "atBosta": "لدى بوسطة",
-    "gap": "الفجوة"
+    "gap": "الفجوة",
+    "storyShort": "{n} وحدة ناقصة — السجلات تتوقع {expected}، وصل إلى بوسطة {atBosta} فقط.",
+    "storyExtra": "{n} وحدة زائدة في بوسطة — السجلات تتوقع {expected}، الموجود {atBosta}."
   },
   "returns": {
     "emptyTitle": "المرتجعات لم تُوصَل بعد",
@@ -86,6 +95,7 @@
     "bostaDesc": "مزامنة مستويات المخزون الفعلي في المستودع",
     "connectLabel": "ربط",
     "connectedLabel": "تم الربط",
-    "continue": "المتابعة إلى لوحة التحكم"
+    "continue": "المتابعة إلى لوحة التحكم",
+    "connectBothHint": "اربط كلا الحسابين للمتابعة"
   }
 }

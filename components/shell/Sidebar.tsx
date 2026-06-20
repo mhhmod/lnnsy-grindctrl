@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/cx";
 import { Brandmark } from "@/components/brand/Brandmark";
 import { TenantSwitcher } from "./TenantSwitcher";
 
@@ -13,22 +13,50 @@ export function Sidebar() {
   const locale = useLocale();
   const pathname = usePathname();
   return (
-    <aside className="flex h-full w-[236px] shrink-0 flex-col border-e p-4">
-      <div className="px-2 py-3"><Brandmark /></div>
-      <nav className="mt-4 flex-1 space-y-1">
+    <aside
+      className={cx(
+        "flex h-full w-[236px] shrink-0 flex-col",
+        "border-e border-hairline bg-paper",
+        "px-3 py-4"
+      )}
+    >
+      {/* Brandmark */}
+      <div className="px-2 py-3 mb-2">
+        <Brandmark />
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-0.5" aria-label={t("overview")}>
         {ITEMS.map((key) => {
           const href = `/${locale}/${key}`;
           const active = pathname === href;
           return (
-            <Link key={key} href={href}
-              className={cn("block border px-3 py-2 font-sans text-[13px]",
-                active ? "surface-inverted" : "border-transparent hover:bg-accent")}>
+            <Link
+              key={key}
+              href={href}
+              className={cx(
+                "flex items-center px-3 py-2 rounded-[2px]",
+                "font-sans text-[13px] leading-snug",
+                "transition-colors duration-150",
+                active
+                  ? "surface-inverted font-medium"
+                  : "text-muted hover:bg-wash hover:text-ink",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
+              )}
+            >
               {t(key)}
             </Link>
           );
         })}
       </nav>
-      <div className="mt-4"><TenantSwitcher /></div>
+
+      {/* Hairline divider */}
+      <div className="my-3 border-t border-hairline" />
+
+      {/* Tenant switcher pinned at bottom */}
+      <div>
+        <TenantSwitcher />
+      </div>
     </aside>
   );
 }

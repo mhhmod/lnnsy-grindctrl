@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/primitives/Skeleton";
 
 interface TableSkeletonProps {
   /** Number of placeholder rows to render. Defaults to 6. */
@@ -9,8 +9,7 @@ interface TableSkeletonProps {
 
 /**
  * Reusable skeleton loader for data tables.
- * Renders placeholder rows using the shadcn Skeleton primitive,
- * keeping the table layout stable while data loads.
+ * Renders placeholder rows using the hand-rolled Skeleton primitive.
  */
 export function TableSkeleton({ rows = 6, cols = 4 }: TableSkeletonProps) {
   return (

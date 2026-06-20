@@ -10,6 +10,7 @@
     "outOfStockFoot": "items at zero units",
     "unexplainedUnits": "Unexplained units",
     "unexplainedUnitsFoot": "investigate variance",
+    "lead": "Your stock picture, right now.",
     "needsAttention": "Needs attention",
     "calm": "Nothing needs attention right now.",
     "gapChip": "GAP",
@@ -26,6 +27,12 @@
     "total": "Total",
     "date": "Date",
     "emptyStatus": "No {status} orders.",
+    "searchPlaceholder": "Search orders or customers",
+    "resultCount": "{shown} of {total} orders",
+    "emptySearch": "No {status} orders match \"{query}\".",
+    "emptyFilter": "No {status} orders.",
+    "clearSearch": "Clear search",
+    "showAll": "Show all orders",
     "drawerPhone": "Phone",
     "drawerTracking": "Tracking",
     "drawerItems": "Items",
@@ -33,7 +40,7 @@
     "qty": "×"
   },
   "inventory": {
-    "searchPlaceholder": "Search by name or SKU…",
+    "searchPlaceholder": "Search products",
     "product": "Product",
     "inStock": "In stock",
     "status": "Status",
@@ -41,17 +48,19 @@
     "slowMoving": "Slow moving",
     "stockAge": "Stock age",
     "soon": "SOON",
-    "noMatch": "No products match your search.",
-    "noMatchBody": "Try a different name or SKU."
+    "noMatch": "No products match \"{query}\".",
+    "clearSearch": "Clear search"
   },
   "variance": {
-    "legend": "Gap = what Bosta actually has − what your records expect. A non-zero gap is stock to investigate.",
+    "legend": "Gap = what Bosta actually has minus what your records expect. A non-zero gap is stock to investigate.",
     "colProduct": "Product",
     "colMeasure": "Measure",
     "colFigures": "Figures",
     "expected": "Expected",
     "atBosta": "At Bosta",
-    "gap": "Gap"
+    "gap": "Gap",
+    "storyShort": "{n} units short — records expect {expected}, only {atBosta} reached Bosta.",
+    "storyExtra": "{n} extra at Bosta — records expect {expected}, {atBosta} on hand."
   },
   "returns": {
     "emptyTitle": "Returns aren't connected yet",
@@ -86,6 +95,7 @@
     "bostaDesc": "Sync real warehouse stock levels",
     "connectLabel": "Connect",
     "connectedLabel": "CONNECTED",
-    "continue": "Continue to dashboard"
+    "continue": "Continue to dashboard",
+    "connectBothHint": "Connect both accounts to continue"
   }
 }

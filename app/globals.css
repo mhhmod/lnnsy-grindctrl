@@ -4,73 +4,171 @@
 
 @layer base {
   :root {
-    /* Reference tokens (hex source of truth in docs/design-system.md), as HSL channels for shadcn */
-    --background: 0 0% 100%;        /* Paper #FFFFFF */
-    --foreground: 0 0% 4%;          /* Ink #0A0A0A */
-    --muted: 0 0% 96%;              /* Wash surface */
-    --muted-foreground: 0 0% 42%;   /* Muted text #6B6B6B */
-    --faint: 0 0% 61%;              /* Faint #9B9B9B */
-    --border: 0 0% 90%;             /* Hairline #E6E6E6 */
-    --input: 0 0% 90%;
-    --ring: 0 0% 4%;                /* focus ring = ink */
-    --accent: 0 0% 96%;             /* Wash #F6F6F5 */
-    --accent-foreground: 0 0% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
-    --primary: 0 0% 4%;             /* solid ink */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 4%;
-    --destructive: 0 0% 4%;         /* no color: destructive == ink */
-    --destructive-foreground: 0 0% 100%;
+    /* ── B&W Ledger token layer (light) ──────────────────────────────────── */
+    /* All values are sRGB grayscale — zero hue. */
+    --paper:    #FFFFFF;   /* background surface */
+    --ink:      #0A0A0A;   /* primary text / inverted fills */
+    --muted:    #6B6B6B;   /* secondary text */
+    --faint:    #9B9B9B;   /* tertiary / captions / disabled */
+    --hairline: #E6E6E6;   /* borders / dividers */
+    --wash:     #F6F6F5;   /* hover fills / subtle surfaces */
+
+    /* Aliases used by primitives */
+    --muted-warm:  #6B6B6B;  /* → same as --muted */
+    --faint-warm:  #9B9B9B;  /* → same as --faint */
+    --ring-warm:   #0A0A0A;  /* focus ring = ink */
+
+    /* Motion */
+    --t-fast: 140ms;
+
     --radius: 2px;
   }
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; font-feature-settings: "tnum" 1; }
 
+  * { @apply border-hairline; }
+  body { @apply bg-paper text-ink; font-feature-settings: "tnum" 1; }
+
+  /* ── B&W Ledger dark mirror (grayscale only, no hue) ─────────────────── */
   .dark {
-    --background: 0 0% 7%;          /* near-black paper */
-    --foreground: 0 0% 96%;         /* near-white ink */
-    --muted: 0 0% 14%;              /* dark wash surface */
-    --muted-foreground: 0 0% 64%;
-    --faint: 0 0% 45%;
-    --border: 0 0% 22%;             /* hairline on dark */
-    --input: 0 0% 22%;
-    --ring: 0 0% 96%;               /* focus = light */
-    --accent: 0 0% 16%;            /* hover wash (dark) */
-    --accent-foreground: 0 0% 96%;
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 0 0% 96%;           /* solid control = light in dark mode */
-    --primary-foreground: 0 0% 7%;
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 0 0% 96%;
-    --destructive: 0 0% 96%;
-    --destructive-foreground: 0 0% 7%;
+    --paper:    #111111;   /* near-black surface */
+    --ink:      #F2F2F2;   /* near-white text */
+    --muted:    #9B9B9B;
+    --faint:    #6B6B6B;
+    --hairline: #2A2A2A;
+    --wash:     #1A1A1A;
+
+    --muted-warm:  #9B9B9B;
+    --faint-warm:  #6B6B6B;
+    --ring-warm:   #F2F2F2;
   }
 }
 
 @layer utilities {
-  /* Inversion = state. Flip surface to paper-on-ink. */
+  /* ── Surface utilities ──────────────────────────────────────────────────── */
+  /* Primary signal for problem/active states: ink bg, paper text, ink border. */
   .surface-inverted {
-    background-color: hsl(var(--foreground));
-    color: hsl(var(--background));
-    border-color: hsl(var(--foreground));
+    background-color: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
   }
-  .surface-inverted *::selection { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
+  .surface-inverted *::selection {
+    background-color: var(--paper);
+    color: var(--ink);
+  }
+  /* Alias — keep for any code that writes .surface-ink */
+  .surface-ink {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ── Tabular figures ──────────────────────────────────────────────────── */
   .nums { font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums; }
 
-  /* Interactive surfaces: hover stays legible whether or not the row is inverted,
-     in both light and dark themes (mix toward the opposite token). */
-  .interactive { cursor: pointer; transition: background-color 0.12s ease-out; }
-  .interactive:hover { background-color: hsl(var(--accent)); }
+  /* ── Interactive surface (hover → Wash) ───────────────────────────────── */
+  .interactive {
+    cursor: pointer;
+    transition: background-color var(--t-fast) ease-out;
+  }
+  .interactive:hover { background-color: var(--wash); }
   .surface-inverted.interactive:hover,
   .surface-inverted .interactive:hover {
-    background-color: color-mix(in oklch, hsl(var(--foreground)) 86%, hsl(var(--background)));
+    /* On inverted surfaces darken slightly instead */
+    background-color: color-mix(in srgb, var(--ink) 86%, var(--paper));
   }
-  @media (prefers-reduced-motion: reduce) { .interactive { transition: none; } }
+
+  /* ── Table row nudge (first-cell 2px inline shift on hover) ─────────────
+     Applied purely via CSS on data-clickable rows — no JS, no reflow.
+     The TD's transition is declared here; cells are always in position:
+     there is no layout shift, just a transform offset.                    */
+  tr[data-clickable] td:first-child {
+    transition: transform var(--t-fast) ease-out;
+  }
+  tr[data-clickable]:hover td:first-child {
+    transform: translateX(2px);
+  }
+  [dir="rtl"] tr[data-clickable]:hover td:first-child {
+    transform: translateX(-2px);
+  }
+
+  /* Active/opened row stays Wash */
+  tr[data-active] {
+    background-color: var(--wash);
+  }
+
+  /* ── Cross-fade helper for table body (filter change ~120ms) ─────────── */
+  .xfade {
+    transition: opacity 120ms ease-out;
+  }
+  .xfade-out {
+    opacity: 0;
+  }
+  .xfade-in {
+    opacity: 1;
+  }
+
+  /* ── Reduced-motion: disable transforms + animations, keep state ──────── */
+  @media (prefers-reduced-motion: reduce) {
+    .interactive { transition: none; }
+    tr[data-clickable] td:first-child { transition: none; }
+    tr[data-clickable]:hover td:first-child { transform: none; }
+    .xfade { transition: none; }
+  }
+}
+
+/* ── Skeleton shimmer animation ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes skeleton-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+  .skeleton-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      var(--wash) 25%,
+      var(--hairline) 50%,
+      var(--wash) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  }
+}
+/* Under reduced-motion, .skeleton-shimmer keeps the static wash fill from bg-wash. */
+
+/* ── Dialog drawer panel ─────────────────────────────────────────────────── */
+dialog.drawer-panel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* A closed <dialog> stays hidden; only flex when open (showModal sets [open]). */
+dialog.drawer-panel[open] {
+  display: flex;
+}
+dialog.drawer-panel:not([open]) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes drawer-slide-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+  @keyframes drawer-slide-in-rtl {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+  }
+  dialog.drawer-panel[open] {
+    animation: drawer-slide-in 0.22s ease-out both;
+  }
+  /* RTL: panel sits on the physical left, slide from the left. */
+  [dir="rtl"] dialog.drawer-panel[open] {
+    animation-name: drawer-slide-in-rtl;
+  }
+}
+
+/* Scrim — native ::backdrop, grayscale ink at 35% */
+dialog.drawer-panel::backdrop {
+  background: color-mix(in srgb, var(--ink) 35%, transparent);
 }

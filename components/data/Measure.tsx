@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/cx";
 
 export interface MeasureGeometry {
   expectedPct: number; atBostaPct: number;
@@ -19,7 +19,15 @@ export function measureGeometry(args: { expected: number; atBosta: number; scale
   };
 }
 
-/** Visual track. `scaleMax` must be shared across all rows (passed by the screen). */
+/**
+ * Visual track. `scaleMax` must be shared across all rows (passed by the screen).
+ *
+ * B&W ledger tokens only — no shadcn vars.
+ * - baseline track: hairline (normal) / paper @ 40% opacity (inverted)
+ * - gap block: ink (normal) / paper (inverted); opacity-30 for "extra" (positive gap)
+ * - ticks: ink (normal) / paper (inverted)
+ * - Block does NOT resize on hover (stability = comfort).
+ */
 export function Measure({ expected, atBosta, scaleMax, inverted = false }: {
   expected: number; atBosta: number; scaleMax: number; inverted?: boolean;
 }) {
@@ -27,22 +35,37 @@ export function Measure({ expected, atBosta, scaleMax, inverted = false }: {
   return (
     <div className="relative h-6 w-full" aria-hidden>
       {/* baseline track */}
-      <div className={cn("absolute inset-x-0 top-1/2 h-px -translate-y-1/2",
-        inverted ? "bg-background/40" : "bg-border")} />
-      {/* gap block */}
       <div
-        className={cn("absolute top-1/2 h-3 -translate-y-1/2",
-          inverted ? "bg-background" : "bg-foreground", !g.solid && "opacity-30")}
+        className={cx(
+          "absolute inset-x-0 top-1/2 h-px -translate-y-1/2",
+          inverted ? "bg-paper opacity-40" : "bg-hairline"
+        )}
+      />
+      {/* gap block — solid ink for missing, reduced opacity for extra */}
+      <div
+        className={cx(
+          "absolute top-1/2 h-3 -translate-y-1/2",
+          inverted ? "bg-paper" : "bg-ink",
+          !g.solid && "opacity-30"
+        )}
         style={{ insetInlineStart: `${g.gapStartPct}%`, width: `${g.gapWidthPct}%` }}
       />
       {/* expected tick */}
-      <div className={cn("absolute top-1/2 h-4 w-px -translate-y-1/2",
-        inverted ? "bg-background" : "bg-foreground")}
-        style={{ insetInlineStart: `${g.expectedPct}%` }} />
+      <div
+        className={cx(
+          "absolute top-1/2 h-4 w-px -translate-y-1/2",
+          inverted ? "bg-paper" : "bg-ink"
+        )}
+        style={{ insetInlineStart: `${g.expectedPct}%` }}
+      />
       {/* at-Bosta tick */}
-      <div className={cn("absolute top-1/2 h-4 w-px -translate-y-1/2",
-        inverted ? "bg-background" : "bg-foreground")}
-        style={{ insetInlineStart: `${g.atBostaPct}%` }} />
+      <div
+        className={cx(
+          "absolute top-1/2 h-4 w-px -translate-y-1/2",
+          inverted ? "bg-paper" : "bg-ink"
+        )}
+        style={{ insetInlineStart: `${g.atBostaPct}%` }}
+      />
     </div>
   );
 }

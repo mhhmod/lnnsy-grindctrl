@@ -6,26 +6,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        faint: "hsl(var(--faint))",
-        muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
-        accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
-        card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
-        popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
-        primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
-        secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-        destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
+        // ── B&W Ledger token layer — all grayscale, no hue ──────────────────
+        paper:      "var(--paper)",
+        ink:        "var(--ink)",
+        muted:      "var(--muted)",    /* secondary text */
+        muted2:     "var(--muted)",    /* alias — prefer muted */
+        faint:      "var(--faint)",
+        hairline:   "var(--hairline)",
+        wash:       "var(--wash)",
+
+        // Warm-named aliases kept for existing className refs — all grayscale
+        "muted-warm":  "var(--muted-warm)",
+        "faint-warm":  "var(--faint-warm)",
+        "ring-warm":   "var(--ring-warm)",
       },
       borderRadius: { lg: "var(--radius)", md: "var(--radius)", sm: "var(--radius)" },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
-        arabic: ["var(--font-arabic)", "system-ui", "sans-serif"],
+        sans:    ["var(--font-sans)",    "system-ui", "sans-serif"],
+        mono:    ["var(--font-mono)",    "ui-monospace", "monospace"],
+        arabic:  ["var(--font-arabic)", "system-ui", "sans-serif"],
       },
     },
   },
