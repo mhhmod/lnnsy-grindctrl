@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Sheet,
   SheetContent,
@@ -21,10 +21,14 @@ interface OrderDrawerProps {
 
 export function OrderDrawer({ order, onOpenChange }: OrderDrawerProps) {
   const t = useTranslations("orders");
+  const locale = useLocale();
+  // Arabic is RTL — drawer should open from the inline-end edge.
+  // shadcn Sheet uses physical sides, so we map locale to "left" | "right".
+  const side = locale === "ar" ? "left" : "right";
 
   return (
     <Sheet open={order !== null} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto p-0">
+      <SheetContent side={side} className="w-full sm:max-w-md overflow-y-auto p-0">
         {order && (
           <div className="flex flex-col h-full">
             {/* Header */}

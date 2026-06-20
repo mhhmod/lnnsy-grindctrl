@@ -2,7 +2,6 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 import { useTenant } from "@/lib/tenant-context";
 import { filterByStatus, isProblemStatus } from "@/lib/orders";
 import type { StatusFilter } from "@/lib/orders";

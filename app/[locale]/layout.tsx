@@ -15,7 +15,7 @@ export default async function LocaleLayout({
   children, params,
 }: { children: ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  if (!routing.locales.includes(locale as any)) notFound();
+  if (!(routing.locales as readonly string[]).includes(locale)) notFound();
   setRequestLocale(locale);
   const messages = await getMessages();
   const dir = locale === "ar" ? "rtl" : "ltr";

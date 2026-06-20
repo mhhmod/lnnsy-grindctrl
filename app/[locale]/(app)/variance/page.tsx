@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useTenant } from "@/lib/tenant-context";
 import { computeVariance, sortVariance } from "@/lib/variance";
 import { formatGap } from "@/lib/format";

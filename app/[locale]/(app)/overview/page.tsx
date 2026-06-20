@@ -17,7 +17,6 @@ import {
   TableHead,
   TableCell,
 } from "@/components/data/LedgerTable";
-import { cn } from "@/lib/utils";
 
 export default function OverviewPage() {
   const t = useTranslations("overview");
