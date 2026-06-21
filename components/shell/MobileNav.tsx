@@ -35,7 +35,7 @@ export function MobileNav() {
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring-warm)] focus-visible:ring-offset-1"
         )}
         onClick={() => setOpen(true)}
-        aria-label="Open navigation"
+        aria-label={t("openNav")}
         aria-expanded={open}
       >
         {/* Three-line hamburger icon */}
@@ -45,9 +45,9 @@ export function MobileNav() {
       </button>
 
       {/* Drawer — native <dialog>, no Radix */}
-      <Drawer open={open} onOpenChange={setOpen} title="Ledger">
+      <Drawer open={open} onOpenChange={setOpen} title="Ledger" closeLabel={t("closeNav")}>
         {/* Nav items fill the body */}
-        <nav className="space-y-0.5 -mx-1" aria-label="Mobile navigation">
+        <nav className="space-y-0.5 -mx-1" aria-label={t("mobileNavLabel")}>
           {ITEMS.map((key) => {
             const href = `/${locale}/${key}`;
             const active = pathname === href;

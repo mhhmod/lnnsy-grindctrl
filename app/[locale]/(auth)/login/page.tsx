@@ -62,11 +62,9 @@ export default function LoginPage() {
         </div>
 
         {/* Sign in button — links to overview (no real auth) */}
-        <Link href={`/${locale}/overview`} className="block w-full">
-          <Button variant="primary" className="w-full">
-            {t("submit")}
-          </Button>
-        </Link>
+        <Button variant="primary" href={`/${locale}/overview`} className="w-full">
+          {t("submit")}
+        </Button>
       </div>
 
       {/* Create workspace link */}

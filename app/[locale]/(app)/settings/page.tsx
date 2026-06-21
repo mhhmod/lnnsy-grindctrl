@@ -17,7 +17,7 @@ function InfoCell({
   className?: string;
 }) {
   return (
-    <div className={cx("border-hairline p-4", className)}>
+    <div className={cx("border border-hairline p-4", className)}>
       <div className="font-sans text-[11px] uppercase tracking-wide text-faint mb-1">
         {label}
       </div>

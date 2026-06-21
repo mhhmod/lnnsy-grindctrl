@@ -11,7 +11,7 @@ export default function InventoryLoading() {
 
       <main className="p-[18px] md:p-7 space-y-5">
         {/* Search input placeholder */}
-        <div className="h-9 max-w-sm animate-pulse bg-muted rounded-none" />
+        <div className="h-9 max-w-sm animate-pulse bg-wash rounded-none" />
 
         {/* Table skeleton — 6 cols: product, in-stock, status, best-seller, slow-moving, stock-age */}
         <div className="overflow-x-auto">

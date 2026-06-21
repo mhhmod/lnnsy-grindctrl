@@ -8,6 +8,8 @@ interface DrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title?: string;
+  /** Translated label for the close button. Falls back to "Close" if omitted. */
+  closeLabel?: string;
   children?: ReactNode;
 }
 
@@ -28,7 +30,7 @@ interface DrawerProps {
  * Slide animation is defined in globals.css with RTL variant.
  * prefers-reduced-motion: slide animation is disabled; dialog appears instantly.
  */
-export function Drawer({ open, onOpenChange, title, children }: DrawerProps) {
+export function Drawer({ open, onOpenChange, title, closeLabel = "Close", children }: DrawerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   // Sync dialog open/close state with React prop
@@ -90,7 +92,7 @@ export function Drawer({ open, onOpenChange, title, children }: DrawerProps) {
         )}
         <button
           type="button"
-          aria-label="Close drawer"
+          aria-label={closeLabel}
           onClick={() => {
             dialogRef.current?.close();
           }}

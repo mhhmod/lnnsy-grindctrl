@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTenant } from "@/lib/tenant-context";
@@ -66,19 +66,23 @@ export function OrdersInner() {
   const orderParam = searchParams.get("order");
 
   // ── Active filter (session-persisted) ──────────────────────────────────────
-  const [activeFilter, setActiveFilter] = useState<StatusFilter>(() => {
+  // Always initialize to "All" so SSR and first-client render match (no hydration mismatch).
+  // Read persisted value from sessionStorage only after mount.
+  const [activeFilter, setActiveFilter] = useState<StatusFilter>("All");
+
+  useEffect(() => {
     try {
-      const saved = typeof sessionStorage !== "undefined"
-        ? sessionStorage.getItem(SESSION_KEY)
-        : null;
+      const saved = sessionStorage.getItem(SESSION_KEY);
       if (saved && (ALL_FILTERS as string[]).includes(saved)) {
-        return saved as StatusFilter;
+        // Reading client-only sessionStorage on mount is the canonical way to
+        // hydrate client-only state without SSR mismatch.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setActiveFilter(saved as StatusFilter);
       }
     } catch {
-      // sessionStorage blocked (SSR or private mode)
+      // sessionStorage blocked (private mode / storage error)
     }
-    return "All";
-  });
+  }, []);
 
   // ── Search query ────────────────────────────────────────────────────────────
   const [query, setQuery] = useState("");
@@ -249,8 +253,8 @@ export function OrdersInner() {
                 <TH>{t("date")}</TH>
               </TR>
             </THead>
-            {/* key triggers React remount → CSS xfade transition kicks in */}
-            <TBody key={fadeKey} className="xfade xfade-in">
+            {/* key triggers React remount → CSS fade-in keyframe animates on mount */}
+            <TBody key={fadeKey} className="xfade-in">
               {visibleOrders.map((order) => {
                 const active = order.id === orderParam;
                 const trimmedQ = query.trim();
@@ -271,8 +275,7 @@ export function OrdersInner() {
                         openOrder(order.id);
                       }
                     }}
-                    role="button"
-                    aria-pressed={active}
+                    aria-label={t("rowLabel", { number: order.number, customer: order.customer })}
                   >
                     <TD className="nums font-mono text-[13px]">
                       {highlight(order.number, trimmedQ)}

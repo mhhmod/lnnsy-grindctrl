@@ -63,12 +63,32 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
     el.style.top = `${rect.bottom + 4}px`;
     el.style.margin = "0";
 
+    // RTL-aware: "end" means the logical inline-end edge.
+    // In RTL documents, inline-end is the left side; in LTR it's the right side.
+    const isRtl = document.documentElement.dir === "rtl";
+
     if (align === "end") {
-      el.style.right = `${window.innerWidth - rect.right}px`;
-      el.style.left = "auto";
+      // Align to the logical inline-end of the trigger.
+      if (isRtl) {
+        // In RTL, inline-end is physical left: align popover's left to trigger's left.
+        el.style.left = `${rect.left}px`;
+        el.style.right = "auto";
+      } else {
+        // In LTR, inline-end is physical right: pin popover's right to trigger's right.
+        el.style.right = `${window.innerWidth - rect.right}px`;
+        el.style.left = "auto";
+      }
     } else {
-      el.style.left = `${rect.left}px`;
-      el.style.right = "auto";
+      // align === "start" — align to the logical inline-start of the trigger.
+      if (isRtl) {
+        // In RTL, inline-start is physical right.
+        el.style.right = `${window.innerWidth - rect.right}px`;
+        el.style.left = "auto";
+      } else {
+        // In LTR, inline-start is physical left.
+        el.style.left = `${rect.left}px`;
+        el.style.right = "auto";
+      }
     }
   }
 
@@ -88,7 +108,10 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
 
     popover.addEventListener("toggle", onToggle);
     return () => popover.removeEventListener("toggle", onToggle);
-  });
+  // positionPopover uses only refs (always current) and stable `align` prop.
+  // Re-attaching on every render would undo the mount-once intent.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleTriggerClick() {
     const api = popoverApi();
