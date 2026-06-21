@@ -89,20 +89,22 @@
     transform: translateX(-2px);
   }
 
-  /* Active/opened row stays Wash */
-  tr[data-active] {
+  /* Active/opened row stays Wash — but not on inverted rows (problem orders) */
+  tr[data-active]:not(.surface-inverted) {
     background-color: var(--wash);
   }
+  /* Active inverted row: darken slightly (same as interactive hover on inverted) */
+  tr[data-active].surface-inverted {
+    background-color: color-mix(in srgb, var(--ink) 86%, var(--paper));
+  }
 
-  /* ── Cross-fade helper for table body (filter change ~120ms) ─────────── */
-  .xfade {
-    transition: opacity 120ms ease-out;
-  }
-  .xfade-out {
-    opacity: 0;
-  }
-  .xfade-in {
-    opacity: 1;
+  /* ── Cross-fade helper for table body (filter/query change ~120ms) ──────
+     .xfade-in triggers a keyframe fade-in when the TBody is remounted.
+     Keyframe is defined outside @layer utilities so it is not purged.     */
+  @media (prefers-reduced-motion: no-preference) {
+    .xfade-in {
+      animation: xfade-in 120ms ease-out both;
+    }
   }
 
   /* ── Reduced-motion: disable transforms + animations, keep state ──────── */
@@ -110,8 +112,13 @@
     .interactive { transition: none; }
     tr[data-clickable] td:first-child { transition: none; }
     tr[data-clickable]:hover td:first-child { transform: none; }
-    .xfade { transition: none; }
   }
+}
+
+/* ── Table body cross-fade keyframe ─────────────────────────────────────── */
+@keyframes xfade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ── Skeleton shimmer animation ──────────────────────────────────────────── */

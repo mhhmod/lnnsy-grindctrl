@@ -14,7 +14,7 @@ export default function OrdersLoading() {
         {/* Filter strip placeholder */}
         <div className="flex gap-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-7 w-16 animate-pulse bg-muted rounded-none" />
+            <div key={i} className="h-7 w-16 animate-pulse bg-wash rounded-none" />
           ))}
         </div>
 

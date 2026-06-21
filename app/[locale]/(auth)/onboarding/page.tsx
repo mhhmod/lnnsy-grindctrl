@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import Link from "next/link";
 import { Brandmark } from "@/components/brand/Brandmark";
 import { Button } from "@/components/primitives/Button";
 import { Chip } from "@/components/primitives/Chip";
@@ -93,11 +92,9 @@ export default function OnboardingPage() {
 
       {/* Continue button — disabled at 40% opacity until both connected */}
       {bothConnected ? (
-        <Link href={`/${locale}/overview`} className="block w-full">
-          <Button variant="primary" className="w-full">
-            {t("continue")}
-          </Button>
-        </Link>
+        <Button variant="primary" href={`/${locale}/overview`} className="w-full">
+          {t("continue")}
+        </Button>
       ) : (
         <div className="space-y-2">
           <Button variant="primary" className="w-full" disabled>

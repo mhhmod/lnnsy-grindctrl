@@ -19,10 +19,13 @@ function escapeRegex(s: string) {
 /** Highlight matched substring in text; returns array of React nodes */
 function highlightMatch(text: string, query: string): React.ReactNode {
   if (!query) return text;
-  const pattern = new RegExp(`(${escapeRegex(query)})`, "gi");
-  const parts = text.split(pattern);
+  // Use a stateless split regex (no /g flag needed for split).
+  // Build a fresh test regex per part to avoid /g lastIndex contamination.
+  const splitRe = new RegExp(`(${escapeRegex(query)})`, "i");
+  const parts = text.split(splitRe);
+  if (parts.length === 1) return text;
   return parts.map((part, i) =>
-    pattern.test(part) ? (
+    splitRe.test(part) ? (
       <strong key={i} className="font-semibold text-ink">
         {part}
       </strong>
@@ -118,8 +121,8 @@ export default function InventoryPage() {
                   <TR
                     key={product.id}
                     className={cx(
-                      // Wash hover on rows (no nudge — rows aren't clickable)
-                      "transition-colors duration-[140ms] ease-out hover:bg-wash",
+                      // Use interactive class so hover uses the inversion-aware darken on problem rows
+                      "interactive",
                       problem && "surface-inverted"
                     )}
                   >

@@ -1,6 +1,6 @@
 {
-  "nav": { "overview": "Overview", "orders": "Orders", "inventory": "Inventory", "variance": "Variance", "returns": "Returns", "settings": "Settings" },
-  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard", "theme": "Theme" },
+  "nav": { "overview": "Overview", "orders": "Orders", "inventory": "Inventory", "variance": "Variance", "returns": "Returns", "settings": "Settings", "openNav": "Open navigation", "closeNav": "Close navigation", "mobileNavLabel": "Mobile navigation", "sidebarLabel": "Sidebar navigation" },
+  "common": { "export": "Export", "search": "Search", "signIn": "Sign in", "connect": "Connect", "connected": "CONNECTED", "continue": "Continue to dashboard", "theme": "Theme", "close": "Close" },
   "overview": {
     "ordersToday": "Orders today",
     "ordersTodayFoot": "across all channels",
@@ -37,7 +37,8 @@
     "drawerTracking": "Tracking",
     "drawerItems": "Items",
     "drawerTimeline": "Timeline",
-    "qty": "×"
+    "qty": "×",
+    "rowLabel": "Open order {number} for {customer}"
   },
   "inventory": {
     "searchPlaceholder": "Search products",
@@ -59,8 +60,8 @@
     "expected": "Expected",
     "atBosta": "At Bosta",
     "gap": "Gap",
-    "storyShort": "{n} units short — records expect {expected}, only {atBosta} reached Bosta.",
-    "storyExtra": "{n} extra at Bosta — records expect {expected}, {atBosta} on hand."
+    "storyShort": "{n} units short (records expect {expected}, only {atBosta} reached Bosta).",
+    "storyExtra": "{n} extra at Bosta (records expect {expected}, {atBosta} on hand)."
   },
   "returns": {
     "emptyTitle": "Returns aren't connected yet",

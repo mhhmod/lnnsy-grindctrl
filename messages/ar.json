@@ -1,6 +1,6 @@
 {
-  "nav": { "overview": "نظرة عامة", "orders": "الطلبات", "inventory": "المخزون", "variance": "الفروقات", "returns": "المرتجعات", "settings": "الإعدادات" },
-  "common": { "export": "تصدير", "search": "بحث", "signIn": "تسجيل الدخول", "connect": "ربط", "connected": "تم الربط", "continue": "المتابعة إلى لوحة التحكم", "theme": "السمة" },
+  "nav": { "overview": "نظرة عامة", "orders": "الطلبات", "inventory": "المخزون", "variance": "الفروقات", "returns": "المرتجعات", "settings": "الإعدادات", "openNav": "فتح التنقل", "closeNav": "إغلاق التنقل", "mobileNavLabel": "تنقل الجوال", "sidebarLabel": "تنقل الشريط الجانبي" },
+  "common": { "export": "تصدير", "search": "بحث", "signIn": "تسجيل الدخول", "connect": "ربط", "connected": "تم الربط", "continue": "المتابعة إلى لوحة التحكم", "theme": "السمة", "close": "إغلاق" },
   "overview": {
     "ordersToday": "طلبات اليوم",
     "ordersTodayFoot": "عبر جميع القنوات",
@@ -37,7 +37,8 @@
     "drawerTracking": "رقم التتبع",
     "drawerItems": "المنتجات",
     "drawerTimeline": "المخطط الزمني",
-    "qty": "×"
+    "qty": "×",
+    "rowLabel": "فتح الطلب {number} للعميل {customer}"
   },
   "inventory": {
     "searchPlaceholder": "بحث في المنتجات",
@@ -59,8 +60,8 @@
     "expected": "المتوقع",
     "atBosta": "لدى بوسطة",
     "gap": "الفجوة",
-    "storyShort": "{n} وحدة ناقصة — السجلات تتوقع {expected}، وصل إلى بوسطة {atBosta} فقط.",
-    "storyExtra": "{n} وحدة زائدة في بوسطة — السجلات تتوقع {expected}، الموجود {atBosta}."
+    "storyShort": "{n} وحدة ناقصة (السجلات تتوقع {expected}، وصل إلى بوسطة {atBosta} فقط).",
+    "storyExtra": "{n} وحدة زائدة في بوسطة (السجلات تتوقع {expected}، الموجود {atBosta})."
   },
   "returns": {
     "emptyTitle": "المرتجعات لم تُوصَل بعد",

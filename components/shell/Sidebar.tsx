@@ -26,7 +26,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-0.5" aria-label={t("overview")}>
+      <nav className="flex-1 space-y-0.5" aria-label={t("sidebarLabel")}>
         {ITEMS.map((key) => {
           const href = `/${locale}/${key}`;
           const active = pathname === href;

@@ -14,12 +14,14 @@ interface OrderDrawerProps {
 
 export function OrderDrawer({ order, onOpenChange }: OrderDrawerProps) {
   const t = useTranslations("orders");
+  const tCommon = useTranslations("common");
 
   return (
     <Drawer
       open={order !== null}
       onOpenChange={onOpenChange}
-      title={order ? `${order.number} — ${order.customer}` : undefined}
+      title={order ? `${order.number} · ${order.customer}` : undefined}
+      closeLabel={tCommon("close")}
     >
       {order && (
         <div className="space-y-6">
