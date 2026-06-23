@@ -59,9 +59,20 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
     if (!triggerRef.current || !popoverRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
     const el = popoverRef.current;
+    const viewportGap = 8;
     el.style.position = "fixed";
-    el.style.top = `${rect.bottom + 4}px`;
+    el.style.maxWidth = `calc(100vw - ${viewportGap * 2}px)`;
     el.style.margin = "0";
+
+    const popoverHeight = el.offsetHeight;
+    const popoverWidth = el.offsetWidth;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const top =
+      spaceBelow >= popoverHeight + 4
+        ? rect.bottom + 4
+        : Math.max(viewportGap, rect.top - popoverHeight - 4);
+
+    el.style.top = `${top}px`;
 
     // RTL-aware: "end" means the logical inline-end edge.
     // In RTL documents, inline-end is the left side; in LTR it's the right side.
@@ -90,6 +101,22 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
         el.style.right = "auto";
       }
     }
+
+    const preferredLeft =
+      align === "end"
+        ? isRtl
+          ? rect.left
+          : rect.right - popoverWidth
+        : isRtl
+          ? rect.right - popoverWidth
+          : rect.left;
+    const left = Math.min(
+      Math.max(viewportGap, preferredLeft),
+      Math.max(viewportGap, window.innerWidth - popoverWidth - viewportGap)
+    );
+
+    el.style.left = `${left}px`;
+    el.style.right = "auto";
   }
 
   useEffect(() => {
@@ -110,6 +137,17 @@ export function Menu({ trigger, items, align = "end", className }: MenuProps) {
     return () => popover.removeEventListener("toggle", onToggle);
   // positionPopover uses only refs (always current) and stable `align` prop.
   // Re-attaching on every render would undo the mount-once intent.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const repositionOpenPopover = () => {
+      if (isExpandedRef.current) positionPopover();
+    };
+
+    window.addEventListener("resize", repositionOpenPopover);
+    return () => window.removeEventListener("resize", repositionOpenPopover);
+  // positionPopover uses only refs (always current) and stable `align` prop.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
