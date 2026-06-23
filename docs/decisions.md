@@ -209,14 +209,14 @@ Note: `OrderDrawer` uses `side="right"` unconditionally. In an RTL layout, the d
 - A pure monochrome flip respects the "no color" rule (D2): no hues are introduced in dark mode.
 - Near-black/near-white (not pure `#000`/`#FFF`) avoids harsh maximum-contrast edges while keeping WCAG AA compliance.
 - Token-layer approach means no `dark:` utility sprawl: one CSS block in `globals.css` covers the entire UI.
-- `next-themes` class strategy is compatible with Next.js App Router SSR without flash, using `disableTransitionOnChange` to suppress flicker on theme switch.
+- A local class strategy updates the document root after hydration, avoiding inline scripts in the React component tree.
 
 **Alternatives rejected:**
 - `prefers-color-scheme` media query only: no user override; operator cannot lock to light if they prefer it despite OS setting.
 - Per-component `dark:` Tailwind variants: would require touching every component and create a maintenance burden inconsistent with the token-layer principle.
 - Dark-by-default: the design spec and existing seed data screenshots are light-first; dark is an overlay, not the base.
 
-**Consequences:** A `ThemeProvider` wrapper (`components/theme/ThemeProvider.tsx`) must be present in the root layout above any component that reads `useTheme`. `ThemeToggle` (`components/shell/ThemeToggle.tsx`) uses `useSyncExternalStore` as a hydration guard to avoid the server/client mismatch that `next-themes` causes on first render. If a future color token is added, a corresponding `.dark` value must be added in the same commit.
+**Consequences:** The local `ThemeProvider` (`components/theme/ThemeProvider.tsx`) must be present in the root layout above any component that reads `useTheme`. It persists light, dark, and system choices in local storage and updates the document root after hydration. `ThemeToggle` (`components/shell/ThemeToggle.tsx`) uses `useSyncExternalStore` as a hydration guard. If a future color token is added, a corresponding `.dark` value must be added in the same commit.
 
 ---
 
