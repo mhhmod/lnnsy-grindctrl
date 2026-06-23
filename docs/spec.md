@@ -24,7 +24,7 @@ A **frontend** built in Next.js with **seed data and working interactions**. Bac
 - First-class handoff documentation (the "evidence" — §13).
 
 **Non-goals (this phase)**
-- No real Shopify/Bosta/Supabase calls. Seed data only.
+- No real Shopify/Bosta/Paymob/Supabase calls. Seed data only.
 - No auth backend (Login/Onboarding are UI flows over seed state).
 - Returns table, best-seller / slow-mover / stock-age analytics — designed as **visible-but-inactive** Phase 2 surfaces.
 
@@ -52,6 +52,7 @@ app/[locale]/
     layout.tsx             app shell: sidebar nav + topbar + tenant switcher
     overview/              4.3  (landing)
     orders/                4.4  (+ detail drawer 4.8)
+    finance/               extension (view-only Paymob/Bosta payout preview)
     inventory/             4.5
     variance/              4.6  (signature)
     returns/               4.7  (Phase 2 empty state)
