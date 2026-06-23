@@ -1,6 +1,6 @@
 "use client";
 import { useSyncExternalStore } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import { useTranslations } from "next-intl";
 import { Sun, Moon } from "@/components/icons";
 import { cx } from "@/lib/cx";
