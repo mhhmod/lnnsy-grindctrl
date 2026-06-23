@@ -161,6 +161,45 @@ unexplainedUnits = sum(|gap|) for all VarianceRow where gap !== 0
 
 For Acme: variance rows are CTN-TEE-02 (gap −3), DNM-JKT-01 (gap −2), SNK-RUN-03 (gap +1) — non-zero gaps sum to |−3| + |−2| + |+1| = **6**. `unexplainedUnits = 6`.
 
+### Finance preview derivations — `lib/finance.ts`
+
+The Finance screen is view-only. It does not call Paymob or Bosta APIs and does not store finance records. It derives a preview ledger from `Order[]`.
+
+```ts
+deriveFinanceRows(orders: Order[]): FinanceOrderRow[]
+deriveFinanceDashboard(orders: Order[]): FinanceDashboard
+deriveCollectionState(status: OrderStatus): FinanceCollectionState
+```
+
+Collection state is derived from order status:
+
+```
+Delivered  -> captured
+Shipped    -> collecting
+New        -> pending
+Processing -> pending
+Failed     -> atRisk
+Returned   -> reversed
+Cancelled  -> cancelled
+```
+
+Preview rails are deterministic until a real payment-method field exists:
+
+- Shipped and Failed orders use `Bosta COD`.
+- New and Processing orders alternate Paymob wallet/card by row index.
+- Delivered orders can be Paymob or Bosta COD by row index.
+- Returned and Cancelled orders keep the derived state but still use the preview rail for fee/payout display.
+
+Fee assumptions are centralized in `FINANCE_ASSUMPTIONS`:
+
+```
+Paymob fee = gross * 0.0275 + 3
+Bosta delivery fee = 45
+Bosta exception fee = 30
+```
+
+These values are preview assumptions only. When real Paymob/Bosta data is wired, replace the rail, fee, payout source, and payout date derivations with provider records while keeping summary values derived.
+
 ### `isProblemStatus(s: OrderStatus): boolean` — `lib/orders.ts`
 
 ```

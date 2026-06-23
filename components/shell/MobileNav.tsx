@@ -10,7 +10,7 @@ import { TenantSwitcher } from "./TenantSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
-const ITEMS = ["overview", "orders", "inventory", "variance", "returns", "settings"] as const;
+const ITEMS = ["overview", "orders", "finance", "inventory", "variance", "returns", "settings"] as const;
 
 /**
  * Hamburger button (shown md:hidden) that opens an off-canvas nav drawer.
@@ -22,6 +22,7 @@ export function MobileNav() {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
+  const activePath = pathname.replace(/\/$/, "");
 
   return (
     <>
@@ -50,7 +51,7 @@ export function MobileNav() {
         <nav className="space-y-0.5 -mx-1" aria-label={t("mobileNavLabel")}>
           {ITEMS.map((key) => {
             const href = `/${locale}/${key}`;
-            const active = pathname === href;
+            const active = activePath === href;
             return (
               <Link
                 key={key}

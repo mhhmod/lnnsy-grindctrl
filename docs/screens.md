@@ -112,6 +112,33 @@ One section per screen. Standing rule: no screen ships without a row here and an
 
 ---
 
+## 5a. Finance
+
+**File:** `app/[locale]/(app)/finance/page.tsx`
+**Route:** `/{locale}/finance`
+**Layout:** App shell.
+**Purpose:** View-only finance preview derived from existing orders. Shows Paymob settlement preview, Bosta collection timing, estimated fees, net payout, and order-level payout rows without live API calls.
+**Data consumed:** `Tenant.orders`, `Tenant.bosta`. i18n keys from `messages/*.json` `finance.*`.
+**`lib/` derivations used:**
+- `deriveFinanceDashboard()` from `lib/finance.ts` - derives summary totals and order-level rows.
+- `deriveFinanceRows()` from `lib/finance.ts` - maps every order to a finance row.
+- `deriveCollectionState()` from `lib/finance.ts` - maps order status to captured, collecting, pending, at risk, reversed, or cancelled.
+- `formatMoney()` from `lib/format.ts` - formats EGP values with Western digits.
+**Components used:** `TopBar`, `Chip`, `Table`/`THead`/`TBody`/`TR`/`TH`/`TD` from `components/primitives/Table`, inline `SourceCell`, inline `StatItem`.
+**Behaviors:**
+- **Source strip:** Paymob is labelled as a preview rail. Bosta displays the active tenant's Bosta account from `Tenant.bosta.account`.
+- **Summary strip:** Collected, Open receivable, At risk, and Net preview are calculated from order totals and derived collection states. At-risk value inverts when non-zero.
+- **Ledger rows:** Each row stays tied to the existing order number, customer, status, total, tracking code, and expected payout date.
+- **Preview rails:** `lib/finance.ts` deterministically assigns a preview rail from order status/index until a real payment method field exists.
+- **Fees:** `FINANCE_ASSUMPTIONS` in `lib/finance.ts` keeps preview Paymob and Bosta fee assumptions in one place.
+**States:**
+- Normal: rows show muted state chips and mono money columns.
+- Problem: at risk, reversed, and cancelled rows render `surface-inverted`.
+- Empty: no orders renders a dashed empty panel.
+**Reference:** Extension to orders and Bosta finance preview.
+
+---
+
 ## 6. Order detail drawer
 
 **File:** `components/orders/OrderDrawer.tsx`

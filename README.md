@@ -37,6 +37,7 @@ app/
         page.tsx             §4.4 Orders wrapper (Suspense)
         OrdersInner.tsx      Orders table + filters + URL param state
         loading.tsx          Orders skeleton loading UI
+      finance/page.tsx       View-only Paymob/Bosta finance preview from orders
       inventory/
         page.tsx             §4.5 Inventory
         loading.tsx          Inventory skeleton loading UI
@@ -78,6 +79,7 @@ lib/
   variance.ts                computeVariance / sortVariance
   stock.ts                   stockStatus (OK / Low / Out)
   overview.ts                computeOverviewStats
+  finance.ts                 derive finance preview rows and summary from orders
   orders.ts                  isProblemStatus / filterByStatus
   format.ts                  formatMoney / formatGap (Western digits always)
   utils.ts                   cn() (clsx + tailwind-merge)

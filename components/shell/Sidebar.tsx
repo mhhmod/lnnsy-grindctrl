@@ -6,12 +6,13 @@ import { cx } from "@/lib/cx";
 import { Brandmark } from "@/components/brand/Brandmark";
 import { TenantSwitcher } from "./TenantSwitcher";
 
-const ITEMS = ["overview", "orders", "inventory", "variance", "returns", "settings"] as const;
+const ITEMS = ["overview", "orders", "finance", "inventory", "variance", "returns", "settings"] as const;
 
 export function Sidebar() {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
+  const activePath = pathname.replace(/\/$/, "");
   return (
     <aside
       className={cx(
@@ -29,7 +30,7 @@ export function Sidebar() {
       <nav className="flex-1 space-y-0.5" aria-label={t("sidebarLabel")}>
         {ITEMS.map((key) => {
           const href = `/${locale}/${key}`;
-          const active = pathname === href;
+          const active = activePath === href;
           return (
             <Link
               key={key}

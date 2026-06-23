@@ -23,6 +23,8 @@ Maps every reference requirement to its implementing file(s) and documentation s
 | Orders: cross-fade on filter/search change (`xfade` + `TBody key={fadeKey}`) | §4.4 | `app/[locale]/(app)/orders/OrdersInner.tsx`, `app/globals.css` | `screens.md §5`, `design-system.md §3b` |
 | Orders: table with Order# (mono), Customer, Status, Total (mono right), Date — newest-first sort | §4.4 | `app/[locale]/(app)/orders/OrdersInner.tsx` | `screens.md §5` |
 | Orders: problem rows (Cancelled/Failed/Returned) invert | §4.4 | `app/[locale]/(app)/orders/OrdersInner.tsx`, `components/data/StatusChip.tsx`, `lib/orders.ts` | `screens.md §5`, `components.md OrderStatusChip` |
+| Finance: view-only Paymob/Bosta payout preview derived from orders | Extension | `app/[locale]/(app)/finance/page.tsx`, `lib/finance.ts` | `screens.md §5a`, `data-model.md §2` |
+| Finance: summary strip and order payout ledger | Extension | `app/[locale]/(app)/finance/page.tsx` | `screens.md §5a` |
 | Inventory: search by name/SKU | §4.5 | `app/[locale]/(app)/inventory/page.tsx` | `screens.md §7` |
 | Inventory: Product name + mono SKU, In stock (mono right), Status chip | §4.5 | `app/[locale]/(app)/inventory/page.tsx`, `components/data/StatusChip.tsx` | `screens.md §7`, `components.md StockStatusChip` |
 | Inventory: Low/Out rows invert; Phase 2 columns disabled with SOON | §4.5 | `app/[locale]/(app)/inventory/page.tsx` | `screens.md §7` |
@@ -69,8 +71,10 @@ Maps every reference requirement to its implementing file(s) and documentation s
 | Empty: no search match (inventory) | §6 | `app/[locale]/(app)/inventory/page.tsx` | `screens.md §7` |
 | Empty: Returns not connected | §6 | `app/[locale]/(app)/returns/page.tsx`, `components/data/EmptyState.tsx` | `screens.md §9` |
 | Empty: Overview calm state | §6 | `app/[locale]/(app)/overview/page.tsx` | `screens.md §4` |
+| Empty: Finance has no orders | §6 | `app/[locale]/(app)/finance/page.tsx` | `screens.md §5a` |
 | Problem: Low/Out stock (inversion) | §6 | `app/[locale]/(app)/inventory/page.tsx`, `components/data/StatusChip.tsx`, `lib/stock.ts` | `screens.md §7`, `data-model.md §2` |
 | Problem: Cancelled/Failed/Returned orders (inversion) | §6 | `app/[locale]/(app)/orders/OrdersInner.tsx`, `components/data/StatusChip.tsx`, `lib/orders.ts` | `screens.md §5` |
+| Problem: Finance at-risk/reversed/cancelled payout rows (inversion) | §6 | `app/[locale]/(app)/finance/page.tsx`, `lib/finance.ts` | `screens.md §5a`, `data-model.md §2` |
 | Problem: non-zero variance (inversion, sorted to top) | §6 | `app/[locale]/(app)/variance/page.tsx`, `lib/variance.ts` | `screens.md §8` |
 | Problem: Overview attention rows (GAP/OUT Chip) | §6 | `app/[locale]/(app)/overview/page.tsx`, `components/primitives/Chip.tsx` | `screens.md §4` |
 | Loading: orders table skeleton | §6 | `app/[locale]/(app)/orders/loading.tsx`, `components/data/TableSkeleton.tsx`, `components/primitives/Skeleton.tsx` | `components.md Skeleton`, `screens.md §5` |
@@ -142,6 +146,7 @@ Maps every reference requirement to its implementing file(s) and documentation s
 | Variance derivation | `lib/variance.ts` | `data-model.md §2` |
 | Stock status derivation | `lib/stock.ts` | `data-model.md §2` |
 | Overview stats derivation | `lib/overview.ts` | `data-model.md §2` |
+| Finance preview derivation | `lib/finance.ts` | `data-model.md §2` |
 | Order helpers | `lib/orders.ts` | `data-model.md §2` |
 | Money and gap formatting | `lib/format.ts` | `data-model.md §2` |
 | 2-tenant seed | `lib/seed/tenant-acme.ts`, `lib/seed/tenant-nile.ts`, `lib/seed/index.ts` | `data-model.md §3` |
